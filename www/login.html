@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Register - YourMusic</title>
+<title>Login - YourMusic</title>
 
 <!-- Handwritten-like font -->
 <link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet">
@@ -36,21 +36,21 @@
 
   .line {
     white-space: nowrap;
-    font-size: 3.8rem;
-    color: rgba(255, 255, 255, 0.08);
-    line-height: 1.2;
+    font-size: 5rem;
+    color: rgba(255, 255, 255, 1);
+    line-height: 1.1;
     position: absolute;
     width: 300%;
-    letter-spacing: 2px;
+    letter-spacing: -2px;
+    filter: brightness(1.3);
   }
 
-  /* Alternating direction for realism */
   .line:nth-child(odd) {
-    animation: scrollLeft 25s linear infinite;
+    animation: scrollLeft 60s linear infinite;
   }
 
   .line:nth-child(even) {
-    animation: scrollRight 25s linear infinite;
+    animation: scrollRight 60s linear infinite;
   }
 
   @keyframes scrollLeft {
@@ -63,11 +63,20 @@
     100% { transform: translateX(0); }
   }
 
-  /* --- Center form --- */
+  /* --- Center fade overlay --- */
+  .fade-center {
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(circle at center, rgba(0,0,0,0.9) 0%, rgba(0,0,0,0.7) 30%, rgba(0,0,0,0.1) 70%, transparent 100%);
+    z-index: 1;
+    pointer-events: none;
+  }
+
+  /* --- Login form --- */
   .form-box {
     position: relative;
     z-index: 2;
-    background: radial-gradient(circle at center, rgba(0, 0, 0, 0.9) 0%, rgba(0, 0, 0, 0.7) 70%, transparent 100%);
+    background: radial-gradient(circle at center, rgba(0, 0, 0, 0.9) 0%, rgba(0, 0, 0, 0.7) 80%, transparent 100%);
     border: 2px solid white;
     border-radius: 25px;
     padding: 50px 80px;
@@ -96,14 +105,6 @@
     font-family: Arial, sans-serif;
   }
 
-  .warning {
-    color: red;
-    font-size: 0.8rem;
-    display: none;
-    font-family: Arial, sans-serif;
-  }
-
-  /* --- "Go" button --- */
   .go-btn {
     position: absolute;
     right: -90px;
@@ -132,29 +133,23 @@
 <!-- Scrolling handwritten background -->
 <div class="scrolling-bg" id="scrollingBg"></div>
 
-<!-- Registration form -->
-<div class="form-box">
-  <label>Username (others don't see this)</label>
-  <input type="text" id="username">
-  <div class="warning" id="usernameWarning">2 late for this one</div>
+<!-- Darker center fade -->
+<div class="fade-center"></div>
 
-  <label>Name (they see this tho)</label>
-  <input type="text" id="name">
+<!-- Login form -->
+<div class="form-box">
+  <label>Username</label>
+  <input type="text" id="username">
 
   <label>Password</label>
   <input type="password" id="password">
-
-  <label>Confirm Password</label>
-  <input type="password" id="confirmPassword">
-  <div class="warning" id="passwordWarning">Passwords do not match</div>
 
   <button class="go-btn" id="goBtn">Go</button>
 </div>
 
 <script>
-  /* Create scrolling lines dynamically */
   const scrollingBg = document.getElementById('scrollingBg');
-  const numLines = 10; // number of horizontal rows
+  const numLines = 10;
   for (let i = 0; i < numLines; i++) {
     const line = document.createElement('div');
     line.classList.add('line');
@@ -163,23 +158,15 @@
     scrollingBg.appendChild(line);
   }
 
-  /* Form validation visuals */
   const username = document.getElementById('username');
-  const nameField = document.getElementById('name');
   const password = document.getElementById('password');
-  const confirmPassword = document.getElementById('confirmPassword');
   const goBtn = document.getElementById('goBtn');
-  const passWarn = document.getElementById('passwordWarning');
 
   function validate() {
-    const allFilled = username.value && nameField.value && password.value && confirmPassword.value;
-    const match = password.value === confirmPassword.value;
-
-    passWarn.style.display = match || !allFilled ? 'none' : 'block';
-    goBtn.classList.toggle('active', allFilled && match);
+    goBtn.classList.toggle('active', username.value && password.value);
   }
 
-  [username, nameField, password, confirmPassword].forEach(el => el.addEventListener('input', validate));
+  [username, password].forEach(el => el.addEventListener('input', validate));
 
   goBtn.addEventListener('click', () => {
     if (goBtn.classList.contains('active')) {
