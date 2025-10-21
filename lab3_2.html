@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Formular de inregistrare animale</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <h1>Formular de inregistrare animale</h1>
+  <p>Completeaza acest formular pentru a inregistra animalul tau la clinica veterinara.</p>
+
+  <form>
+    <label for="numeStapan">Nume stapan:</label>
+    <input type="text" id="numeStapan" name="numeStapan" placeholder="Introdu numele stapanului">
+
+    <label for="telefon">Telefon:</label>
+    <input type="text" id="telefon" name="telefon" placeholder="Ex: 07xxxxxxxx">
+
+    <label for="numeAnimal">Nume animal:</label>
+    <input type="text" id="numeAnimal" name="numeAnimal" placeholder="Introdu numele animalului">
+
+    <label for="specie">Specie:</label>
+    <select id="specie" name="specie">
+      <option>Cainе</option>
+      <option>Pisica</option>
+      <option>Iepure</option>
+      <option>Altul</option>
+    </select>
+
+    <fieldset>
+      <legend>Sexul animalului</legend>
+      <label><input type="radio" name="sex" value="mascul">Mascul</label>
+      <label><input type="radio" name="sex" value="femela">Femela</label>
+    </fieldset>
+
+    <fieldset>
+      <legend>Servicii dorite</legend>
+      <label><input type="checkbox" name="servicii" value="vaccinare">Vaccinare</label>
+      <label><input type="checkbox" name="servicii" value="deparazitare">Deparazitare</label>
+      <label><input type="checkbox" name="servicii" value="consult">Consult</label>
+    </fieldset>
+
+    <label for="observatii">Observatii:</label>
+    <textarea id="observatii" name="observatii" placeholder="Scrie observatiile aici..."></textarea>
+
+    <div class="buttons">
+      <input type="submit" value="Trimite">
+      <input type="reset" value="Reseteaza">
+    </div>
+  </form>
+
+
+  <img id="dog" src="https://photoshop-kopona.com/uploads/posts/2018-08/1533999698_funny-dog-1.jpg" alt="Caine jucaus">
+
+  <script>
+    const dog = document.getElementById('dog');
+    let inRightCorner = false;
+    let isTeleporting = false;
+
+    document.addEventListener('mousemove', (e) => {
+      if (isTeleporting) return;
+
+      const rect = dog.getBoundingClientRect();
+      const distX = Math.abs(e.clientX - (rect.left + rect.width / 2));
+      const distY = Math.abs(e.clientY - (rect.top + rect.height / 2));
+
+      if (distX < 120 && distY < 120) {
+        isTeleporting = true;
+        dog.style.visibility = 'hidden'; 
+
+        setTimeout(() => {
+          inRightCorner = !inRightCorner;
+
+          if (inRightCorner) {
+            dog.style.left = 'auto';
+            dog.style.right = '15px';
+            dog.style.transform = 'scaleX(-1)';
+          } else {
+            dog.style.right = 'auto';
+            dog.style.left = '15px';
+            dog.style.transform = 'scaleX(1)';
+          }
+
+          dog.style.visibility = 'visible'; 
+          isTeleporting = false;
+        }, 200);
+      }
+    });
+  </script>
+</body>
+</html>

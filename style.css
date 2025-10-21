@@ -1,0 +1,125 @@
+body {
+  font-family: Arial, sans-serif;
+  background-color: #e6f0fa;
+  margin: 0;
+  padding: 40px;
+  position: relative;
+  overflow-x: hidden;
+}
+
+h1 {
+  text-align: center;
+  color: #2b4c7e;
+}
+
+p {
+  text-align: center;
+  color: #4a4a4a;
+  margin-bottom: 25px;
+}
+
+form {
+  background-color: #ffffff;
+  width: 60%;
+  max-width: 550px;
+  margin: 0 auto;
+  padding: 25px 30px;
+  border-radius: 10px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+}
+
+label {
+  display: block;
+  font-weight: bold;
+  margin-top: 12px;
+  color: #2b4c7e;
+}
+
+input[type="text"],
+select,
+textarea {
+  width: 95%;
+  padding: 8px;
+  margin-top: 5px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 14px;
+  transition: border-color 0.3s;
+}
+
+input[type="text"]:focus,
+select:focus,
+textarea:focus {
+  border-color: #4a90e2;
+  outline: none;
+}
+
+fieldset {
+  border: 1px solid #4a90e2;
+  border-radius: 8px;
+  padding: 10px 15px;
+  margin-top: 15px;
+}
+
+legend {
+  color: #2b4c7e;
+  font-weight: bold;
+}
+
+input[type="radio"],
+input[type="checkbox"] {
+  margin-right: 5px;
+}
+
+textarea {
+  height: 80px;
+  resize: vertical;
+}
+
+.buttons {
+  text-align: center;
+  margin-top: 20px;
+}
+
+input[type="submit"],
+input[type="reset"] {
+  padding: 10px 25px;
+  margin: 5px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 15px;
+  transition: background-color 0.3s, transform 0.2s;
+}
+
+input[type="submit"] {
+  background-color: #2b7de9;
+  color: white;
+}
+
+input[type="reset"] {
+  background-color: #c0c0c0;
+  color: #333;
+}
+
+input[type="submit"]:hover {
+  background-color: #1d5bbf;
+  transform: scale(1.03);
+}
+
+input[type="reset"]:hover {
+  background-color: #a8a8a8;
+  transform: scale(1.03);
+}
+
+/* 🔹 Cainele animat */
+#dog {
+  position: fixed;
+  bottom: 15px;
+  left: 15px;
+  width: 100px;
+  height: auto;
+  cursor: pointer;
+  z-index: 10;
+  visibility: visible;
+}
