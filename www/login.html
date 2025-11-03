@@ -3,176 +3,52 @@
 <head>
 <meta charset="UTF-8">
 <title>Login - YourMusic</title>
-
-<!-- Handwritten-like font -->
 <link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet">
-
+<link rel="stylesheet" href="style.css">
 <style>
-  * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-  }
-
-  body {
-    background: black;
-    color: white;
-    font-family: 'Pacifico', cursive;
-    height: 100vh;
-    overflow: hidden;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    position: relative;
-  }
-
-  /* --- Animated handwritten background --- */
-  .scrolling-bg {
-    position: absolute;
-    inset: 0;
-    overflow: hidden;
-    z-index: 0;
-  }
-
-  .line {
-    white-space: nowrap;
-    font-size: 5rem;
-    color: rgba(255, 255, 255, 1);
-    line-height: 1.1;
-    position: absolute;
-    width: 300%;
-    letter-spacing: -2px;
-    filter: brightness(1.3);
-  }
-
-  .line:nth-child(odd) {
-    animation: scrollLeft 60s linear infinite;
-  }
-
-  .line:nth-child(even) {
-    animation: scrollRight 60s linear infinite;
-  }
-
-  @keyframes scrollLeft {
-    0% { transform: translateX(0); }
-    100% { transform: translateX(-50%); }
-  }
-
-  @keyframes scrollRight {
-    0% { transform: translateX(-50%); }
-    100% { transform: translateX(0); }
-  }
-
-  /* --- Center fade overlay --- */
-  .fade-center {
-    position: absolute;
-    inset: 0;
-    background: radial-gradient(circle at center, rgba(0,0,0,0.9) 0%, rgba(0,0,0,0.7) 30%, rgba(0,0,0,0.1) 70%, transparent 100%);
-    z-index: 1;
-    pointer-events: none;
-  }
-
-  /* --- Login form --- */
-  .form-box {
-    position: relative;
-    z-index: 2;
-    background: radial-gradient(circle at center, rgba(0, 0, 0, 0.9) 0%, rgba(0, 0, 0, 0.7) 80%, transparent 100%);
-    border: 2px solid white;
-    border-radius: 25px;
-    padding: 50px 80px;
-    box-shadow: 0 0 30px rgba(255, 255, 255, 0.1);
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    backdrop-filter: blur(3px);
-  }
-
-  .form-box label {
-    margin-top: 12px;
-    font-size: 1rem;
-    font-family: Arial, sans-serif;
-  }
-
-  .form-box input {
-    display: block;
-    width: 260px;
-    margin: 10px 0 5px 0;
-    padding: 10px;
-    background: black;
-    color: white;
-    border: 2px solid white;
-    border-radius: 5px;
-    font-family: Arial, sans-serif;
-  }
-
-  .go-btn {
-    position: absolute;
-    right: -90px;
-    top: 50%;
-    transform: translateY(-50%);
-    width: 80px;
-    height: 80px;
-    border-radius: 50%;
-    border: 2px solid white;
-    background: white;
-    color: black;
-    font-size: 1.5rem;
-    cursor: pointer;
-    transition: background 0.3s, color 0.3s;
-    font-family: 'Arial', sans-serif;
-  }
-
-  .go-btn.active {
-    background: purple;
-    color: white;
-  }
+  main{position:relative;display:flex;align-items:center;justify-content:center;height:100vh;}
+  .scrolling-bg{position:absolute;inset:0;overflow:hidden;z-index:0;}
+  .line{white-space:nowrap;font-size:5rem;color:white;line-height:1.1;position:absolute;width:300%;letter-spacing:-2px;filter:brightness(1.3);}
+  .line:nth-child(odd){animation:scrollLeft 60s linear infinite;}
+  .line:nth-child(even){animation:scrollRight 60s linear infinite;}
+  @keyframes scrollLeft{0%{transform:translateX(0);}100%{transform:translateX(-50%);}}
+  @keyframes scrollRight{0%{transform:translateX(-50%);}100%{transform:translateX(0);}}
+  .fade-center{position:absolute;inset:0;background:radial-gradient(circle at center,rgba(0,0,0,.9)0%,rgba(0,0,0,.7)30%,rgba(0,0,0,.1)70%,transparent 100%);z-index:1;}
+  .form-box{position:relative;z-index:2;background:radial-gradient(circle at center,rgba(0,0,0,.9)0%,rgba(0,0,0,.7)80%,transparent 100%);
+    border:2px solid white;border-radius:25px;padding:50px 80px;box-shadow:0 0 30px rgba(255,255,255,.1);backdrop-filter:blur(3px);}
+  .form-box label{font-family:Arial,sans-serif;margin-top:12px;display:block;}
+  .form-box input{width:260px;margin:10px 0;padding:10px;background:black;color:white;border:2px solid white;border-radius:5px;font-family:Arial,sans-serif;}
+  .go-btn{position:absolute;right:-90px;top:50%;transform:translateY(-50%);width:80px;height:80px;border-radius:50%;border:2px solid white;background:white;color:black;font-size:1.5rem;cursor:pointer;transition:.3s;}
+  .go-btn.active{background:purple;color:white;}
 </style>
 </head>
-<body>
+<body id="top">
+<header></header>
+<nav></nav>
 
-<!-- Scrolling handwritten background -->
-<div class="scrolling-bg" id="scrollingBg"></div>
+<main>
+  <div class="scrolling-bg" id="scrollingBg"></div>
+  <div class="fade-center"></div>
+  <div class="form-box">
+    <label>Username</label>
+    <input type="text" id="username">
+    <label>Password</label>
+    <input type="password" id="password">
+    <button class="go-btn" id="goBtn">Go</button>
+  </div>
+</main>
 
-<!-- Darker center fade -->
-<div class="fade-center"></div>
-
-<!-- Login form -->
-<div class="form-box">
-  <label>Username</label>
-  <input type="text" id="username">
-
-  <label>Password</label>
-  <input type="password" id="password">
-
-  <button class="go-btn" id="goBtn">Go</button>
-</div>
+<aside></aside>
+<footer>© 2025 YourMusic</footer>
+<a href="#top" class="back-to-top">⬆️ Mergi sus</a>
 
 <script>
-  const scrollingBg = document.getElementById('scrollingBg');
-  const numLines = 10;
-  for (let i = 0; i < numLines; i++) {
-    const line = document.createElement('div');
-    line.classList.add('line');
-    line.style.top = `${(i / numLines) * 100}%`;
-    line.textContent = "yourmusicyourmusicyourmusicyourmusic".repeat(6);
-    scrollingBg.appendChild(line);
-  }
-
-  const username = document.getElementById('username');
-  const password = document.getElementById('password');
-  const goBtn = document.getElementById('goBtn');
-
-  function validate() {
-    goBtn.classList.toggle('active', username.value && password.value);
-  }
-
-  [username, password].forEach(el => el.addEventListener('input', validate));
-
-  goBtn.addEventListener('click', () => {
-    if (goBtn.classList.contains('active')) {
-      window.location.href = 'dashboard.html';
-    }
-  });
+const scrollingBg=document.getElementById('scrollingBg');
+for(let i=0;i<10;i++){const l=document.createElement('div');l.classList.add('line');l.style.top=`${(i/10)*100}%`;
+l.textContent="yourmusicyourmusicyourmusicyourmusic".repeat(6);scrollingBg.appendChild(l);}
+const u=document.getElementById('username'),p=document.getElementById('password'),b=document.getElementById('goBtn');
+function v(){b.classList.toggle('active',u.value&&p.value);} [u,p].forEach(e=>e.addEventListener('input',v));
+b.addEventListener('click',()=>{if(b.classList.contains('active'))window.location.href='dashboard.html';});
 </script>
 </body>
 </html>

@@ -3,189 +3,63 @@
 <head>
 <meta charset="UTF-8">
 <title>Register - YourMusic</title>
-
-<!-- Handwritten-like font -->
 <link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet">
-
+<link rel="stylesheet" href="style.css">
 <style>
-  * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-  }
-
-  body {
-    background: black;
-    color: white;
-    font-family: 'Pacifico', cursive;
-    height: 100vh;
-    overflow: hidden;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    position: relative;
-  }
-
-  /* --- Animated handwritten background --- */
-  .scrolling-bg {
-    position: absolute;
-    inset: 0;
-    overflow: hidden;
-    z-index: 0;
-  }
-
-  .line {
-    white-space: nowrap;
-    font-size: 3.8rem;
-    color: rgba(255, 255, 255, 0.08);
-    line-height: 1.2;
-    position: absolute;
-    width: 300%;
-    letter-spacing: 2px;
-  }
-
-  /* Alternating direction for realism */
-  .line:nth-child(odd) {
-    animation: scrollLeft 25s linear infinite;
-  }
-
-  .line:nth-child(even) {
-    animation: scrollRight 25s linear infinite;
-  }
-
-  @keyframes scrollLeft {
-    0% { transform: translateX(0); }
-    100% { transform: translateX(-50%); }
-  }
-
-  @keyframes scrollRight {
-    0% { transform: translateX(-50%); }
-    100% { transform: translateX(0); }
-  }
-
-  /* --- Center form --- */
-  .form-box {
-    position: relative;
-    z-index: 2;
-    background: radial-gradient(circle at center, rgba(0, 0, 0, 0.9) 0%, rgba(0, 0, 0, 0.7) 70%, transparent 100%);
-    border: 2px solid white;
-    border-radius: 25px;
-    padding: 50px 80px;
-    box-shadow: 0 0 30px rgba(255, 255, 255, 0.1);
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    backdrop-filter: blur(3px);
-  }
-
-  .form-box label {
-    margin-top: 12px;
-    font-size: 1rem;
-    font-family: Arial, sans-serif;
-  }
-
-  .form-box input {
-    display: block;
-    width: 260px;
-    margin: 10px 0 5px 0;
-    padding: 10px;
-    background: black;
-    color: white;
-    border: 2px solid white;
-    border-radius: 5px;
-    font-family: Arial, sans-serif;
-  }
-
-  .warning {
-    color: red;
-    font-size: 0.8rem;
-    display: none;
-    font-family: Arial, sans-serif;
-  }
-
-  /* --- "Go" button --- */
-  .go-btn {
-    position: absolute;
-    right: -90px;
-    top: 50%;
-    transform: translateY(-50%);
-    width: 80px;
-    height: 80px;
-    border-radius: 50%;
-    border: 2px solid white;
-    background: white;
-    color: black;
-    font-size: 1.5rem;
-    cursor: pointer;
-    transition: background 0.3s, color 0.3s;
-    font-family: 'Arial', sans-serif;
-  }
-
-  .go-btn.active {
-    background: purple;
-    color: white;
-  }
+  main{position:relative;display:flex;align-items:center;justify-content:center;height:100vh;}
+  .scrolling-bg{position:absolute;inset:0;overflow:hidden;z-index:0;}
+  .line{white-space:nowrap;font-size:5rem;color:rgba(255,255,255,0.08);line-height:1.1;position:absolute;width:300%;letter-spacing:-2px;}
+  .line:nth-child(odd){animation:scrollLeft 60s linear infinite;}
+  .line:nth-child(even){animation:scrollRight 60s linear infinite;}
+  @keyframes scrollLeft{0%{transform:translateX(0);}100%{transform:translateX(-50%);}}
+  @keyframes scrollRight{0%{transform:translateX(-50%);}100%{transform:translateX(0);}}
+  .form-box{position:relative;z-index:2;background:radial-gradient(circle at center,rgba(0,0,0,.9)0%,rgba(0,0,0,.7)70%,transparent 100%);
+    border:2px solid white;border-radius:25px;padding:50px 80px;box-shadow:0 0 30px rgba(255,255,255,.1);backdrop-filter:blur(3px);}
+  .form-box label{font-family:Arial,sans-serif;margin-top:12px;display:block;}
+  .form-box input{width:260px;margin:10px 0;padding:10px;background:black;color:white;border:2px solid white;border-radius:5px;font-family:Arial,sans-serif;}
+  .warning{color:red;font-size:.8rem;font-family:Arial,sans-serif;display:none;}
+  .go-btn{position:absolute;right:-90px;top:50%;transform:translateY(-50%);width:80px;height:80px;border-radius:50%;border:2px solid white;background:white;color:black;font-size:1.5rem;cursor:pointer;transition:.3s;}
+  .go-btn.active{background:purple;color:white;}
 </style>
 </head>
-<body>
+<body id="top">
+<header></header>
+<nav></nav>
 
-<!-- Scrolling handwritten background -->
-<div class="scrolling-bg" id="scrollingBg"></div>
+<main>
+  <div class="scrolling-bg" id="scrollingBg"></div>
+  <div class="form-box">
+    <label>Username (others don't see this)</label>
+    <input type="text" id="username">
+    <div class="warning" id="usernameWarning">2 late for this one</div>
 
-<!-- Registration form -->
-<div class="form-box">
-  <label>Username (others don't see this)</label>
-  <input type="text" id="username">
-  <div class="warning" id="usernameWarning">2 late for this one</div>
+    <label>Name (they see this tho)</label>
+    <input type="text" id="name">
 
-  <label>Name (they see this tho)</label>
-  <input type="text" id="name">
+    <label>Password</label>
+    <input type="password" id="password">
 
-  <label>Password</label>
-  <input type="password" id="password">
+    <label>Confirm Password</label>
+    <input type="password" id="confirmPassword">
+    <div class="warning" id="passwordWarning">Passwords do not match</div>
 
-  <label>Confirm Password</label>
-  <input type="password" id="confirmPassword">
-  <div class="warning" id="passwordWarning">Passwords do not match</div>
+    <button class="go-btn" id="goBtn">Go</button>
+  </div>
+</main>
 
-  <button class="go-btn" id="goBtn">Go</button>
-</div>
+<aside></aside>
+<footer>© 2025 YourMusic</footer>
+<a href="#top" class="back-to-top">⬆️ Mergi sus</a>
 
 <script>
-  /* Create scrolling lines dynamically */
-  const scrollingBg = document.getElementById('scrollingBg');
-  const numLines = 10; // number of horizontal rows
-  for (let i = 0; i < numLines; i++) {
-    const line = document.createElement('div');
-    line.classList.add('line');
-    line.style.top = `${(i / numLines) * 100}%`;
-    line.textContent = "yourmusicyourmusicyourmusicyourmusic".repeat(6);
-    scrollingBg.appendChild(line);
-  }
-
-  /* Form validation visuals */
-  const username = document.getElementById('username');
-  const nameField = document.getElementById('name');
-  const password = document.getElementById('password');
-  const confirmPassword = document.getElementById('confirmPassword');
-  const goBtn = document.getElementById('goBtn');
-  const passWarn = document.getElementById('passwordWarning');
-
-  function validate() {
-    const allFilled = username.value && nameField.value && password.value && confirmPassword.value;
-    const match = password.value === confirmPassword.value;
-
-    passWarn.style.display = match || !allFilled ? 'none' : 'block';
-    goBtn.classList.toggle('active', allFilled && match);
-  }
-
-  [username, nameField, password, confirmPassword].forEach(el => el.addEventListener('input', validate));
-
-  goBtn.addEventListener('click', () => {
-    if (goBtn.classList.contains('active')) {
-      window.location.href = 'dashboard.html';
-    }
-  });
+const scrollingBg=document.getElementById('scrollingBg');
+for(let i=0;i<10;i++){const l=document.createElement('div');l.classList.add('line');l.style.top=`${(i/10)*100}%`;
+l.textContent="yourmusicyourmusicyourmusicyourmusic".repeat(6);scrollingBg.appendChild(l);}
+const u=document.getElementById('username'),n=document.getElementById('name'),p=document.getElementById('password'),
+c=document.getElementById('confirmPassword'),b=document.getElementById('goBtn'),w=document.getElementById('passwordWarning');
+function v(){const f=u.value&&n.value&&p.value&&c.value,m=p.value===c.value;w.style.display=m||!f?'none':'block';b.classList.toggle('active',f&&m);}
+[u,n,p,c].forEach(e=>e.addEventListener('input',v));
+b.addEventListener('click',()=>{if(b.classList.contains('active'))window.location.href='dashboard.html';});
 </script>
 </body>
 </html>
