@@ -1,65 +1,110 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<title>Register - YourMusic</title>
-<link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="style.css">
-<style>
-  main{position:relative;display:flex;align-items:center;justify-content:center;height:100vh;}
-  .scrolling-bg{position:absolute;inset:0;overflow:hidden;z-index:0;}
-  .line{white-space:nowrap;font-size:5rem;color:rgba(255,255,255,0.08);line-height:1.1;position:absolute;width:300%;letter-spacing:-2px;}
-  .line:nth-child(odd){animation:scrollLeft 60s linear infinite;}
-  .line:nth-child(even){animation:scrollRight 60s linear infinite;}
-  @keyframes scrollLeft{0%{transform:translateX(0);}100%{transform:translateX(-50%);}}
-  @keyframes scrollRight{0%{transform:translateX(-50%);}100%{transform:translateX(0);}}
-  .form-box{position:relative;z-index:2;background:radial-gradient(circle at center,rgba(0,0,0,.9)0%,rgba(0,0,0,.7)70%,transparent 100%);
-    border:2px solid white;border-radius:25px;padding:50px 80px;box-shadow:0 0 30px rgba(255,255,255,.1);backdrop-filter:blur(3px);}
-  .form-box label{font-family:Arial,sans-serif;margin-top:12px;display:block;}
-  .form-box input{width:260px;margin:10px 0;padding:10px;background:black;color:white;border:2px solid white;border-radius:5px;font-family:Arial,sans-serif;}
-  .warning{color:red;font-size:.8rem;font-family:Arial,sans-serif;display:none;}
-  .go-btn{position:absolute;right:-90px;top:50%;transform:translateY(-50%);width:80px;height:80px;border-radius:50%;border:2px solid white;background:white;color:black;font-size:1.5rem;cursor:pointer;transition:.3s;}
-  .go-btn.active{background:purple;color:white;}
-</style>
+  <meta charset="UTF-8">
+  <title>Register - YourMusic</title>
+  <link rel="stylesheet" href="style.css">
 </head>
-<body id="top">
-<header></header>
-<nav></nav>
+<body> <!-- Removed class="fade-in" -->
 
-<main>
+  <!-- Page transition overlay -->
+  <div id="page-transition-overlay"></div>
+
+  <!-- Animated background -->
   <div class="scrolling-bg" id="scrollingBg"></div>
-  <div class="form-box">
-    <label>Username (others don't see this)</label>
-    <input type="text" id="username">
-    <div class="warning" id="usernameWarning">2 late for this one</div>
 
-    <label>Name (they see this tho)</label>
-    <input type="text" id="name">
+  <!-- Fade overlay -->
+  <div class="fade-center"></div>
 
-    <label>Password</label>
-    <input type="password" id="password">
+  <!-- New Centering Container -->
+  <div class="form-container">
 
-    <label>Confirm Password</label>
-    <input type="password" id="confirmPassword">
-    <div class="warning" id="passwordWarning">Passwords do not match</div>
+    <!-- Register form -->
+    <div class="form-box">
+      <label>
+        Username <span class="note">(people see this)</span>
+      </label>
+      <input type="text" id="username">
 
-    <button class="go-btn" id="goBtn">Go</button>
-  </div>
-</main>
+      <label>Email</label>
+      <input type="email" id="email">
 
-<aside></aside>
-<footer>© 2025 YourMusic</footer>
-<a href="#top" class="back-to-top">⬆️ Mergi sus</a>
+      <label>Password</label>
+      <input type="password" id="password">
 
-<script>
-const scrollingBg=document.getElementById('scrollingBg');
-for(let i=0;i<10;i++){const l=document.createElement('div');l.classList.add('line');l.style.top=`${(i/10)*100}%`;
-l.textContent="yourmusicyourmusicyourmusicyourmusic".repeat(6);scrollingBg.appendChild(l);}
-const u=document.getElementById('username'),n=document.getElementById('name'),p=document.getElementById('password'),
-c=document.getElementById('confirmPassword'),b=document.getElementById('goBtn'),w=document.getElementById('passwordWarning');
-function v(){const f=u.value&&n.value&&p.value&&c.value,m=p.value===c.value;w.style.display=m||!f?'none':'block';b.classList.toggle('active',f&&m);}
-[u,n,p,c].forEach(e=>e.addEventListener('input',v));
-b.addEventListener('click',()=>{if(b.classList.contains('active'))window.location.href='dashboard.html';});
-</script>
+      <div class="alt-link">
+        <p>Already have an account? <a href="login.html" class="page-link">Log in</a></p>
+      </div>
+    </div> <!-- .form-box ends here -->
+
+    <!-- Button is now a SIBLING to the form-box -->
+    <button class="go-btn" id="goBtn">
+      Go
+      <span class="particle-wrapper"></span>
+    </button>
+  
+  </div> <!-- .form-container ends here -->
+
+  <script>
+    /* Background lines */
+    const scrollingBg = document.getElementById('scrollingBg');
+    const numLines = 10;
+    for (let i = 0; i < numLines; i++) {
+      const line = document.createElement('div');
+      line.classList.add('line');
+      line.style.top = `${(i / numLines) * 100}%`;
+      line.textContent = "yourmusicyourmusicyourmusicyourmusic".repeat(6);
+      scrollingBg.appendChild(line);
+    }
+
+    /* Go button activation */
+    const username = document.getElementById('username');
+    const email = document.getElementById('email');
+    const password = document.getElementById('password');
+    const goBtn = document.getElementById('goBtn');
+    const formBox = document.querySelector('.form-box');
+
+    function validate() {
+      // Check if all three fields have a value
+      const allFilled = username.value.trim() !== '' && email.value.trim() !== '' && password.value.trim() !== '';
+
+      // Toggle 'active' class on both the button AND the form box
+      goBtn.classList.toggle('active', allFilled);
+      formBox.classList.toggle('active', allFilled);
+    }
+    [username, email, password].forEach(el => el.addEventListener('input', validate));
+
+    goBtn.addEventListener('click', () => {
+      if (goBtn.classList.contains('active')) {
+        
+        // New transition logic
+        const transitionOverlay = document.getElementById('page-transition-overlay');
+        transitionOverlay.classList.add('fade-out');
+        setTimeout(() => {
+          window.location.href = 'dashboard.html';
+        }, 500);
+      }
+    });
+
+    /* Page transition logic */
+    const transitionOverlay = document.getElementById('page-transition-overlay');
+    // Fade in on load
+    window.addEventListener('load', () => {
+      transitionOverlay.style.opacity = '0';
+    });
+
+    // Fade out on link clicks
+    document.querySelectorAll('.page-link').forEach(link => {
+      link.addEventListener('click', function(e) {
+        e.preventDefault();
+        const destination = this.href;
+        transitionOverlay.classList.add('fade-out');
+        setTimeout(() => {
+          window.location.href = destination;
+        }, 500);
+      });
+    });
+  </script>
+
 </body>
 </html>

@@ -1,1 +1,491 @@
- 
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>YourMusic - Dashboard</title>
+  <link rel="stylesheet" href="dashboard-style.css">
+  <link rel="stylesheet" href="style.css"> 
+</head>
+<body>
+  
+  <div id="page-transition-overlay"></div>
+
+  <div class="app-container">
+    
+    <!-- === Glass Sidebar === -->
+    <nav class="sidebar">
+      <div class="logo-container">
+        <a href="#" class="nav-logo" data-page="home">yrm</a>
+      </div>
+      <ul class="nav-menu">
+        <li><a href="#" class="nav-link active" data-page="home">Home</a></li>
+        <li><a href="#" class="nav-link" data-page="my-music">My Music</a></li>
+        <li><a href="#" class="nav-link" data-page="playlists">Playlists</a></li>
+        <li><a href="#" class="nav-link" data-page="friends">Friends</a></li>
+      </ul>
+      <div class="sidebar-footer">
+        <a href="index.html" class="nav-link" id="logout-link">Log Out</a>
+      </div>
+    </nav>
+
+    <!-- === Main Content Area === -->
+    <main class="main-content" id="main-content">
+      <!-- Content will be loaded here by JavaScript -->
+    </main>
+
+    <!-- === Glass Music Player Footer === -->
+    <footer class="music-player">
+      <div class="song-info">
+        <span id="player-song-name">Song Name</span>
+        <span id="player-artist-name">Artist</span>
+      </div>
+      
+      <div class="player-controls">
+        <button class="player-btn" id="prev-btn">
+          <svg viewBox="0 0 24 24" width="22" height="22" fill="currentColor"><path d="M6 6h2v12H6zm3.5 6 8.5 6V6z"></path></svg>
+        </button>
+        <button class="player-btn play-btn" id="play-btn" data-icon="play">
+          <svg viewBox="0 0 24 24" width="24" height="24" fill="currentColor"><path d="M8 5.14v13.72L19.25 12 8 5.14z"></path></svg>
+        </button>
+        <button class="player-btn" id="next-btn">
+          <svg viewBox="0 0 24 24" width="22" height="22" fill="currentColor"><path d="m16 6 2.5 6-2.5 6H18V6h-2zM6 18l8.5-6L6 6v12z"></path></svg>
+        </button>
+      </div>
+
+      <div class="player-progress">
+        <input type="range" id="progress-bar" value="0">
+      </div>
+      
+      <div class="volume-control">
+        <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"></path></svg>
+        <input type="range" id="volume-slider" value="100" min="0" max="100">
+      </div>
+    </footer>
+
+  </div> <!-- .app-container ends here -->
+
+  <!-- === BACK TO TOP BUTTON (NEW) === -->
+  <a href="#" class="back-to-top-btn" id="backToTopBtn" title="Back to top">
+    ⬆️
+  </a>
+
+
+  <!-- === MODALS (Hidden by default) === -->
+
+  <!-- Modal for Creating a New Playlist -->
+  <div id="modal-new-playlist" class="modal-overlay">
+    <div class="modal-content">
+      <button class="modal-close" data-modal="modal-new-playlist">&times;</button>
+      <h2>New Playlist</h2>
+      <p>Give your new playlist a name.</p>
+      <input type="text" id="new-playlist-name" placeholder="My Awesome Mix">
+      <button class="modal-action-btn" id="create-playlist-btn">Create</button>
+    </div>
+  </div>
+
+  <!-- Modal for Adding a Friend -->
+  <div id="modal-add-friend" class="modal-overlay">
+    <div class="modal-content">
+      <button class="modal-close" data-modal="modal-add-friend">&times;</button>
+      <h2>Add Friend</h2>
+      <p>Enter your friend's unique username.</p>
+      <input type="text" id="add-friend-username" placeholder="FriendUsername">
+      <button class="modal-action-btn" id="send-friend-request-btn">Send Request</button>
+    </div>
+  </div>
+
+  <!-- Modal for Editing Song Details -->
+  <div id="modal-edit-song" class="modal-overlay">
+    <div class="modal-content">
+      <button class="modal-close" data-modal="modal-edit-song">&times;</button>
+      <h2>Edit Song</h2>
+      <label for="edit-song-name">Song Name</label>
+      <input type="text" id="edit-song-name">
+      <label for="edit-song-details">Details (Album, message, etc.)</label>
+      <textarea id="edit-song-details" rows="4"></textarea>
+      <button class="modal-action-btn" id="save-song-details-btn">Save</button>
+    </div>
+  </div>
+  
+  <!-- Modal for Managing Collaborators -->
+  <div id="modal-manage-collaborators" class="modal-overlay">
+    <div class="modal-content">
+      <button class="modal-close" data-modal="modal-manage-collaborators">&times;</button>
+      <h2>Manage Collaborators</h2>
+      <p>Playlist: <span id="collab-playlist-name"></span></p>
+      <div class="collab-list">
+        <div class="collab-item"><span>User123 (You)</span> <span class="collab-role">Creator</span></div>
+        <div class="collab-item"><span>FriendOne</span> <button class="btn-remove-collab">Remove</button></div>
+      </div>
+      <label for="add-collab-username">Add Collaborator (by username)</label>
+      <input type="text" id="add-collab-username" placeholder="FriendTwo">
+      <button class="modal-action-btn" id="add-collab-btn">Add</button>
+    </div>
+  </div>
+
+  <!-- Modal for Download Prompt -->
+  <div id="modal-download-song" class="modal-overlay">
+    <div class="modal-content">
+      <button class="modal-close" data-modal="modal-download-song">&times;</button>
+      <h2>New Music</h2>
+      <p>You don't have the song "<span id="download-song-name"></span>" (from <span id="download-song-user"></span>).</p>
+      <p>To play and add this song to your "My Music" library, you need to download it.</p>
+      <button class="modal-action-btn" id="confirm-download-btn">Download Song</button>
+    </div>
+  </div>
+
+  <!-- Generic Confirmation Modal (for removing friends, songs, etc.) -->
+  <div id="modal-confirm" class="modal-overlay">
+    <div class="modal-content">
+      <h2 id="confirm-title">Are you sure?</h2>
+      <p id="confirm-text">Do you really want to remove this?</p>
+      <div class="confirm-buttons">
+        <button class="modal-action-btn" id="confirm-btn-yes">Yes</button>
+        <button class="modal-close" id="confirm-btn-no" data-modal="modal-confirm">No</button>
+      </div>
+    </div>
+  </div>
+
+  <input type="file" id="upload-music-input" accept="audio/*" multiple style="display:none;">
+
+
+  <script>
+    // === All Page Content is Stored Here ===
+    const pageContent = {
+      'home': `
+        <div class="page-header">
+          <h1>Home</h1>
+        </div>
+        <h2>Recently Played</h2>
+        <div class="content-grid">
+          <div class="glass-card" data-page-load="playlist-detail">
+            <div class="card-title">Chill Mix</div>
+            <div class="card-subtitle">Your weekly chill playlist</div>
+          </div>
+          <div class="glass-card">
+            <div class="card-title">Liked Songs</div>
+            <div class="card-subtitle">321 songs</div>
+          </div>
+          <div class="glass-card" data-page-load="playlist-detail">
+            <div class="card-title">Dark & Stormy</div>
+            <div class="card-subtitle">Playlist by FriendOne</div>
+          </div>
+          <div class="glass-card">
+            <div class="card-title">Workout</div>
+            <div class="card-subtitle">Playlist</div>
+          </div>
+        </div>
+        <h2 style="margin-top: 40px;">Friend Activity</h2>
+        <div class="content-list">
+          <div class="list-item">
+            <div class="list-item-main">
+              <div class="list-item-title">FriendOne</div>
+              <div class="list-item-sub">is listening to <b>Artist Name</b></div>
+            </div>
+          </div>
+          <div class="list-item">
+            <div class="list-item-main">
+              <div class="list-item-title">User123</div>
+              <div class="list-item-sub">listened to <b>Dark & Stormy</b></div>
+            </div>
+          </div>
+        </div>
+      `,
+      'my-music': `
+        <div class="page-header">
+          <h1>My Music</h1>
+          <button class="glass-btn" id="btn-upload-music">Upload Music</button>
+        </div>
+        <div class="content-list">
+          <div class="list-item">
+            <div class="list-item-main">
+              <div class="list-item-title">My Favorite Song.mp3</div>
+              <div class="list-item-sub">Details: Uploaded from my PC</div>
+            </div>
+            <div class="list-item-actions">
+              <button class="btn-edit-song">Edit</button>
+              <button class="btn-remove-song">Delete</button>
+            </div>
+          </div>
+          <div class="list-item">
+            <div class="list-item-main">
+              <div class="list-item-title">Another Track.wav</div>
+              <div class="list-item-sub">Details: Chill album</div>
+            </div>
+            <div class="list-item-actions">
+              <button class="btn-edit-song">Edit</button>
+              <button class="btn-remove-song">Delete</button>
+            </div>
+          </div>
+        </div>
+      `,
+      'playlists': `
+        <div class="page-header">
+          <h1>Playlists</h1>
+          <button class="glass-btn" id="btn-new-playlist">New Playlist</button>
+        </div>
+        <div class="content-grid">
+          <div class="glass-card" data-page-load="playlist-detail">
+            <div class="card-title">Chill Mix</div>
+            <div class="card-subtitle">Created by You</div>
+          </div>
+          <div class="glass-card">
+            <div class="card-title">Workout</div>
+            <div class="card-subtitle">Created by You</div>
+          </div>
+          <div class="glass-card" data-page-load="playlist-detail">
+            <div class="card-title">Dark & Stormy</div>
+            <div class="card-subtitle">By FriendOne</div>
+          </div>
+        </div>
+      `,
+      'playlist-detail': `
+        <div class="page-header">
+          <h1>Chill Mix</h1>
+          <button class="glass-btn" id="btn-manage-collab">Manage Collaborators</button>
+        </div>
+        <div class="content-list">
+          <div class="list-item">
+            <div class="list-item-main">
+              <div class="list-item-title">My Favorite Song.mp3</div>
+              <div class="list-item-sub">From: My Music</div>
+            </div>
+            <div class="list-item-actions">
+              <button class="btn-remove-from-playlist">Remove</button>
+            </div>
+          </div>
+          <div class="list-item song-item-download" data-song-name="New Vibe.mp3" data-song-user="FriendOne">
+            <div class="list-item-main">
+              <div class="list-item-title">New Vibe.mp3</div>
+              <div class="list-item-sub">From: FriendOne (Click to download)</div>
+            </div>
+            <div class="list-item-actions">
+              <button class="btn-remove-from-playlist">Remove</button>
+            </div>
+          </div>
+          <div class="list-item">
+            <div class="list-item-main">
+              <div class="list-item-title">Another Track.wav</div>
+              <div class="list-item-sub">From: My Music</div>
+            </div>
+            <div class="list-item-actions">
+              <button class="btn-remove-from-playlist">Remove</button>
+            </div>
+          </div>
+        </div>
+      `,
+      'friends': `
+        <div class="page-header">
+          <h1>Friends</h1>
+          <button class="glass-btn" id="btn-add-friend">Add Friend</button>
+        </div>
+        <div class="content-list">
+          <div class="list-item">
+            <div class="list-item-main">
+              <div class="list-item-title">FriendOne</div>
+              <div class="list-item-sub">Online</div>
+            </div>
+            <div class="list-item-actions">
+              <button class="btn-remove-friend" data-friend-name="FriendOne">Remove</button>
+            </div>
+          </div>
+          <div class="list-item">
+            <div class="list-item-main">
+              <div class="list-item-title">User123</div>
+              <div class="list-item-sub">Offline</div>
+            </div>
+            <div class="list-item-actions">
+              <button class="btn-remove-friend" data-friend-name="User123">Remove</button>
+            </div>
+          </div>
+        </div>
+      `
+    };
+
+    document.addEventListener('DOMContentLoaded', () => {
+      const mainContent = document.getElementById('main-content');
+      const navLinks = document.querySelectorAll('.nav-link');
+      const transitionOverlay = document.getElementById('page-transition-overlay');
+      const backToTopBtn = document.getElementById('backToTopBtn'); // NEW
+      
+      // === Page Load Fade-in ===
+      window.addEventListener('load', () => {
+        transitionOverlay.style.opacity = '0';
+      });
+
+      // --- Content Loading ---
+      function loadContent(pageKey) {
+        transitionOverlay.classList.add('fade-out');
+        const html = pageContent[pageKey];
+        mainContent.style.opacity = 0;
+        
+        setTimeout(() => {
+          if (html) {
+            mainContent.innerHTML = html;
+          } else {
+            console.warn('Page not found in content object.', pageKey);
+            mainContent.innerHTML = '<h2>Error: Page content missing.</h2>';
+          }
+          mainContent.style.opacity = 1; 
+          transitionOverlay.classList.remove('fade-out');
+        }, 400); 
+      }
+
+      // Load home page by default
+      loadContent('home');
+
+      // Sidebar navigation
+      navLinks.forEach(link => {
+        link.addEventListener('click', function(e) {
+          e.preventDefault();
+          const pageKey = this.getAttribute('data-page');
+          
+          if (!pageKey || this.classList.contains('active')) {
+            return;
+          }
+
+          navLinks.forEach(l => l.classList.remove('active'));
+          this.classList.add('active');
+          loadContent(pageKey);
+        });
+      });
+
+      // --- Page Exit Transition ---
+      document.getElementById('logout-link').addEventListener('click', function(e) {
+        e.preventDefault();
+        const destination = this.href;
+        transitionOverlay.classList.add('fade-out');
+        setTimeout(() => {
+          window.location.href = destination;
+        }, 500);
+      });
+      
+      // --- Modal Handling ---
+      function openModal(modalId) {
+        document.getElementById(modalId).style.display = 'flex';
+      }
+      function closeModal(modalId) {
+        document.getElementById(modalId).style.display = 'none';
+      }
+      
+      document.querySelectorAll('.modal-close').forEach(btn => {
+        btn.addEventListener('click', () => {
+          closeModal(btn.getAttribute('data-modal'));
+        });
+      });
+
+      // --- Event Delegation for Dynamic Content ---
+      mainContent.addEventListener('click', (e) => {
+        const clickedCard = e.target.closest('.glass-card');
+        if (clickedCard && clickedCard.dataset.pageLoad) {
+          const pageToLoad = clickedCard.dataset.pageLoad;
+          navLinks.forEach(l => l.classList.remove('active'));
+          const playlistsLink = document.querySelector('.nav-link[data-page="playlists"]');
+          if(playlistsLink) playlistsLink.classList.add('active');
+          loadContent(pageToLoad);
+          return; 
+        }
+
+        if (e.target.id === 'btn-upload-music') {
+          document.getElementById('upload-music-input').click();
+        }
+        
+        if (e.target.classList.contains('btn-edit-song')) {
+          document.getElementById('edit-song-name').value = "My Favorite Song";
+          document.getElementById('edit-song-details').value = "Uploaded from my PC\nAwesome album";
+          openModal('modal-edit-song');
+        }
+
+        if (e.target.id === 'btn-new-playlist') {
+          openModal('modal-new-playlist');
+        }
+        
+        if (e.target.id === 'btn-manage-collab') {
+          document.getElementById('collab-playlist-name').textContent = "Chill Mix";
+          openModal('modal-manage-collaborators');
+        }
+
+        if (e.target.id === 'btn-add-friend') {
+          openModal('modal-add-friend');
+        }
+
+        const downloadPrompt = e.target.closest('.song-item-download');
+        if (downloadPrompt) {
+          document.getElementById('download-song-name').textContent = downloadPrompt.dataset.songName;
+          document.getElementById('download-song-user').textContent = downloadPrompt.dataset.songUser;
+          openModal('modal-download-song');
+        }
+
+        if (e.target.classList.contains('btn-remove-friend')) {
+          document.getElementById('confirm-title').textContent = "Remove Friend";
+          document.getElementById('confirm-text').textContent = `Are you sure you want to remove ${e.target.dataset.friendName}?`;
+          openModal('modal-confirm');
+        }
+      });
+
+      // --- Modal Action Button Listeners ---
+      document.getElementById('create-playlist-btn').addEventListener('click', () => {
+        const playlistName = document.getElementById('new-playlist-name').value;
+        if (playlistName) {
+          console.log(`Creating playlist: ${playlistName}`);
+          closeModal('modal-new-playlist');
+        }
+      });
+      
+      document.getElementById('send-friend-request-btn').addEventListener('click', () => {
+        const friendName = document.getElementById('add-friend-username').value;
+        if (friendName) {
+          console.log(`Sending friend request to: ${friendName}`);
+          closeModal('modal-add-friend');
+        }
+      });
+      
+      document.getElementById('save-song-details-btn').addEventListener('click', () => {
+        console.log("Saving song details...");
+        closeModal('modal-edit-song');
+      });
+
+      document.getElementById('upload-music-input').addEventListener('change', function(e) {
+        if (e.target.files.length > 0) {
+          alert(`${e.target.files.length} song(s) selected! \n(This is a simulation. After upload, you would reload 'My Music'.)`);
+        }
+      });
+      
+      // --- Player Logic with SVG swap ---
+      const playBtn = document.getElementById('play-btn');
+      const playIconSVG = `<svg viewBox="0 0 24 24" width="24" height="24" fill="currentColor"><path d="M8 5.14v13.72L19.25 12 8 5.14z"></path></svg>`;
+      const pauseIconSVG = `<svg viewBox="0 0 24 24" width="24" height="24" fill="currentColor"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"></path></svg>`;
+
+      playBtn.addEventListener('click', function() {
+        if (this.dataset.icon === 'play') {
+          this.innerHTML = pauseIconSVG;
+          this.dataset.icon = 'pause';
+        } else {
+          this.innerHTML = playIconSVG;
+          this.dataset.icon = 'play';
+        }
+      });
+      
+      // --- NEW: "BACK TO TOP" BUTTON LOGIC ---
+      mainContent.addEventListener('scroll', () => {
+        if (mainContent.scrollTop > 200) { // Show button after 200px of scroll
+          backToTopBtn.classList.add('visible');
+        } else {
+          backToTopBtn.classList.remove('visible');
+        }
+      });
+
+      backToTopBtn.addEventListener('click', (e) => {
+        e.preventDefault();
+        mainContent.scrollTo({
+          top: 0,
+          behavior: 'smooth'
+        });
+      });
+
+    });
+  </script>
+
+</body>
+</html>

@@ -1,64 +1,311 @@
-/* ===== GRID LAYOUT ===== */
-body {
-  display: grid;
-  grid-template-areas:
-    "header header"
-    "nav main"
-    "nav aside"
-    "footer footer";
-  grid-template-columns: 1fr 3fr;
-  grid-template-rows: auto 1fr auto auto;
-  min-height: 100vh;
-  background: black;
-  color: white;
-  margin: 0;
-  font-family: Arial, sans-serif;
+@font-face {
+  font-family: 'Momo Trust Display';
+  src: url('MomoTrustDisplay-Regular.ttf') format('truetype');
 }
 
-header { grid-area: header; }
-nav { grid-area: nav; }
-main { grid-area: main; }
-aside { grid-area: aside; }
-footer { grid-area: footer; text-align: center; padding: 10px; }
+/* === RESET === */
+*{margin:0;padding:0;box-sizing:border-box}
 
-/* ===== FLEXBOX HELPERS ===== */
-.flex-row {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 20px;
+body{
+  background:black;
+  color:white;
+  font-family:'Momo Trust Display',sans-serif;
+  height:100vh;width:100vw;
+  overflow:hidden;
+  display:flex;align-items:center;justify-content:center;
+  position:relative;
 }
 
-/* ===== RESPONSIVE ===== */
-@media (max-width: 900px) {
-  body {
-    grid-template-areas:
-      "header"
-      "nav"
-      "main"
-      "aside"
-      "footer";
-    grid-template-columns: 1fr;
-  }
-  .flex-row { flex-direction: column; align-items: center; }
-  .card { width: 90%; }
+/* === MOVING BACKGROUND === */
+.scrolling-bg{position:absolute;inset:0;overflow:hidden;z-index:0}
+.line{
+  position:absolute;
+  white-space:nowrap;
+  font-size:4rem;
+  color: white; /* Solid white text */
+  line-height:1.2;
+  width:300%;
+  letter-spacing:2px;
+  animation-timing-function:linear;
+  animation-iteration-count:infinite;
+  user-select:none;pointer-events:none;
+}
+.line:nth-child(odd){animation:scrollLeft 120s linear infinite}
+.line:nth-child(even){animation:scrollRight 150s linear infinite}
+@keyframes scrollLeft{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
+@keyframes scrollRight{0%{transform:translateX(-50%)}100%{transform:translateX(0)}}
+
+/* === NO FADE OVERLAY === */
+.fade-center{display:none}
+
+/* === FORM BOX === */
+.form-box{
+  position:relative;z-index:5;
+  background:rgba(255,255,255,.05);
+  border:2px solid rgba(255,255,255,.8);
+  border-radius:25px;
+  padding:50px 80px;
+  box-shadow:0 0 20px rgba(255,255,255,.15);
+  display:flex;flex-direction:column;align-items:flex-start;
+  backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);
+  transition:border .4s,box-shadow .4s;
 }
 
-/* ===== BACK TO TOP BUTTON ===== */
-html { scroll-behavior: smooth; }
+/* Purple “goop” - REMOVED */
+.form-box::after{ display:none; }
+.form-box.active:hover::after{ display:none; }
 
-.back-to-top {
-  position: fixed;
-  bottom: 20px;
-  right: 20px;
-  background: white;
-  color: black;
-  padding: 10px 15px;
-  border-radius: 8px;
+/* Active form (border still changes) */
+.form-box.active{
+  border-color:#b400ff;
+  box-shadow:0 0 30px rgba(180,0,255,.4);
+}
+
+/* === LABELS & INPUTS === */
+.form-box label{margin-top:12px;font-size:1rem;z-index:2}
+.note{font-size:.85rem;color:rgba(255,255,255,.7);margin-left:8px}
+
+.form-box input{
+  display:block;width:260px;margin:10px 0 5px 0;padding:10px;
+  background:rgba(255,255,255,.08);
+  color:white;border:2px solid rgba(255,255,255,.8);
+  border-radius:6px;
+  font-family:'Momo Trust Display',sans-serif;
+  transition:border .3s,background .3s;
+  z-index:2;
+}
+.form-box input:focus{border-color:#b400ff;background:rgba(255,255,255,.15);outline:none}
+.form-box input::placeholder{color:rgba(255,255,255,.7)}
+
+/* === FORGOT PASSWORD LINK === */
+.forgot-link-container {
+  width: 260px; /* Match the input width */
+  text-align: right;
+  margin-top: 8px;
+  z-index: 2;
+  position: relative;
+}
+.forgot-link {
+  font-size: 0.85rem;
+  color: rgba(255, 255, 255, 0.7);
   text-decoration: none;
-  font-weight: bold;
-  opacity: 0.8;
-  transition: opacity 0.3s, transform 0.3s;
-  z-index: 1000;
+  transition: color 0.3s ease;
 }
-.back-to-top:hover { opacity: 1; transform: scale(1.1); }
+.forgot-link:hover {
+  color: #b400ff;
+  text-decoration: underline;
+}
+
+
+/* === GO BUTTON === */
+.go-btn{
+  position:absolute;right:-110px;top:50%;
+  
+  /* Start hidden and off-screen */
+  opacity:0;
+  pointer-events:none;
+  transform:translate(50px, -50%); /* Start 50px to the right */
+
+  /* New Glass Look */
+  width:95px;height:95px;border-radius:50%;
+  background:rgba(255,255,255,.05); 
+  border:2px solid rgba(255,255,255,.8);
+  backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);
+  color:white;
+
+  /* Imprinted Text Effect */
+  text-shadow: -1px -1px 1px rgba(0, 0, 0, 0.7), 
+               1px 1px 1px rgba(255, 255, 255, 0.15); 
+
+  font-size:1.9rem;cursor:pointer;
+  font-family:'Momo Trust Display',sans-serif;
+  z-index:10;
+  box-shadow:0 0 25px rgba(255,255,255,.1);
+  transition:all .5s cubic-bezier(.175,.885,.32,1.275);
+}
+
+/* Active state (visible) */
+.go-btn.active{
+  /* Move to final position */
+  opacity:1;
+  pointer-events:auto;
+  transform:translateY(-50%); 
+
+  /* Imprinted Text + Glow */
+  text-shadow: -1px -1px 1px rgba(0, 0, 0, 0.7), 
+               1px 1px 1px rgba(255, 255, 255, 0.15), 
+               0 0 15px rgba(180, 0, 255, 0.7); 
+               
+  /* Glass effect */
+  backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px); 
+  background:rgba(255,255,255,.05); 
+  border-color:#b400ff;
+  box-shadow:0 0 30px rgba(180,0,255,.4); 
+}
+
+/* Hover state (only when active) */
+.form-box.active .go-btn:hover{
+  background:rgba(180, 0, 255, .2); 
+  box-shadow:0 0 55px rgba(180,0,255,.9);
+  transform:translateY(-50%) scale(1.05); 
+  backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px); 
+
+  /* Imprinted Text + Stronger Glow */
+  text-shadow: -1px -1px 1px rgba(0, 0, 0, 0.7), 
+               1px 1px 1px rgba(255, 255, 255, 0.15), 
+               0 0 20px rgba(180, 0, 255, 0.9); 
+}
+
+/* === PARTICLE EFFECTS === */
+.particle-wrapper {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+}
+
+/* Create 4 particle pseudo-elements */
+.go-btn::before,
+.go-btn::after,
+.particle-wrapper::before,
+.particle-wrapper::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  border-radius: 50%;
+  opacity: 0;
+  transform: translate(-50%, -50%);
+  z-index: -1;
+}
+
+/* Particle 1 (Purple) */
+.go-btn.active::before {
+  width: 8px; height: 8px;
+  background: #b400ff;
+  animation: shoot-1 .7s ease-out .4s forwards;
+}
+/* Particle 2 (White) */
+.go-btn.active::after {
+  width: 6px; height: 6px;
+  background: white;
+  box-shadow: 0 0 8px white;
+  animation: shoot-2 .9s ease-out .5s forwards;
+}
+/* Particle 3 (White) */
+.go-btn.active .particle-wrapper::before {
+  width: 7px; height: 7px;
+  background: white;
+  animation: shoot-3 .8s ease-out .5s forwards;
+}
+/* Particle 4 (Purple) */
+.go-btn.active .particle-wrapper::after {
+  width: 5px; height: 5px;
+  background: #b400ff;
+  box-shadow: 0 0 8px #b400ff;
+  animation: shoot-4 1s ease-out .6s forwards;
+}
+
+/* Keyframes for shooting particles to the right */
+@keyframes shoot-1 {
+  0% { opacity: 1; transform: translate(-50%, -50%); }
+  100% { opacity: 0; transform: translate(120px, -40px) scale(0.5); }
+}
+@keyframes shoot-2 {
+  0% { opacity: 1; transform: translate(-50%, -50%); }
+  100% { opacity: 0; transform: translate(100px, 30px) scale(0.8); }
+}
+@keyframes shoot-3 {
+  0% { opacity: 1; transform: translate(-50%, -50%); }
+  100% { opacity: 0; transform: translate(130px, 50px) scale(0.6); }
+}
+@keyframes shoot-4 {
+  0% { opacity: 1; transform: translate(-50%, -50%); }
+  100% { opacity: 0; transform: translate(90px, -60px) scale(0.7); }
+}
+
+
+/* === ALT LINK === */
+.alt-link{
+  margin-top: 40px; /* Adjusted margin */
+  text-align:center;
+  width:100%;
+  z-index: 2;
+}
+.alt-link p{color:rgba(255,255,255,.9);font-size:.95rem;letter-spacing:.5px}
+.alt-link a{color:#fff;text-decoration:underline;transition:opacity .3s}
+.alt-link a:hover{opacity:.7}
+
+/* === NEW STYLES for forgot-password.html === */
+.form-title {
+  font-size: 2rem;
+  font-weight: 300;
+  margin-bottom: 10px;
+  color: #fff;
+  text-shadow: 0 0 10px rgba(180, 0, 255, 0.5);
+  z-index: 2;
+  width: 100%; 
+}
+
+.form-subtitle {
+  font-size: 0.9rem;
+  color: rgba(255, 255, 255, 0.7);
+  margin-bottom: 25px;
+  z-index: 2;
+  width: 100%;
+  transition: color 0.3s ease;
+}
+
+.form-btn {
+  width: 100%; 
+  padding: 12px;
+  margin-top: 20px;
+  background: rgba(180, 0, 255, 0.2); 
+  border: 2px solid #b400ff;
+  border-radius: 6px;
+  color: white;
+  font-family: 'Momo Trust Display', sans-serif;
+  font-size: 1.1rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  z-index: 2;
+}
+
+.form-btn:hover {
+  background: rgba(180, 0, 255, 0.4);
+  box-shadow: 0 0 20px rgba(180, 0, 255, 0.5);
+}
+
+.form-btn:disabled {
+  background: rgba(255, 255, 255, 0.1);
+  border-color: rgba(255, 255, 255, 0.5);
+  color: rgba(255, 255, 255, 0.5);
+  cursor: not-allowed;
+}
+
+/* === RESPONSIVE === */
+@media(max-width:600px){
+  .line{font-size:2.5rem}
+  .form-box{padding:40px 50px}
+  .go-btn{right:-80px;width:80px;height:80px;font-size:1.5rem}
+  .alt-link{margin-top:40px}
+}
+
+/* === NEW RULE FOR THE FIX === */
+.form-container{
+  position: relative;
+}
+
+/* === PAGE TRANSITION === */
+#page-transition-overlay {
+  position: fixed;
+  inset: 0;
+  background: black;
+  z-index: 9999;
+  opacity: 1;
+  pointer-events: none;
+  transition: opacity 0.5s ease-out;
+}
+#page-transition-overlay.fade-out {
+  opacity: 1;
+  pointer-events: all;
+}

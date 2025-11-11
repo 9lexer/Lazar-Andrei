@@ -1,54 +1,111 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<title>Login - YourMusic</title>
-<link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="style.css">
-<style>
-  main{position:relative;display:flex;align-items:center;justify-content:center;height:100vh;}
-  .scrolling-bg{position:absolute;inset:0;overflow:hidden;z-index:0;}
-  .line{white-space:nowrap;font-size:5rem;color:white;line-height:1.1;position:absolute;width:300%;letter-spacing:-2px;filter:brightness(1.3);}
-  .line:nth-child(odd){animation:scrollLeft 60s linear infinite;}
-  .line:nth-child(even){animation:scrollRight 60s linear infinite;}
-  @keyframes scrollLeft{0%{transform:translateX(0);}100%{transform:translateX(-50%);}}
-  @keyframes scrollRight{0%{transform:translateX(-50%);}100%{transform:translateX(0);}}
-  .fade-center{position:absolute;inset:0;background:radial-gradient(circle at center,rgba(0,0,0,.9)0%,rgba(0,0,0,.7)30%,rgba(0,0,0,.1)70%,transparent 100%);z-index:1;}
-  .form-box{position:relative;z-index:2;background:radial-gradient(circle at center,rgba(0,0,0,.9)0%,rgba(0,0,0,.7)80%,transparent 100%);
-    border:2px solid white;border-radius:25px;padding:50px 80px;box-shadow:0 0 30px rgba(255,255,255,.1);backdrop-filter:blur(3px);}
-  .form-box label{font-family:Arial,sans-serif;margin-top:12px;display:block;}
-  .form-box input{width:260px;margin:10px 0;padding:10px;background:black;color:white;border:2px solid white;border-radius:5px;font-family:Arial,sans-serif;}
-  .go-btn{position:absolute;right:-90px;top:50%;transform:translateY(-50%);width:80px;height:80px;border-radius:50%;border:2px solid white;background:white;color:black;font-size:1.5rem;cursor:pointer;transition:.3s;}
-  .go-btn.active{background:purple;color:white;}
-</style>
+  <meta charset="UTF-8">
+  <title>Login - YourMusic</title>
+  <link rel="stylesheet" href="style.css">
 </head>
-<body id="top">
-<header></header>
-<nav></nav>
+<body> <!-- Removed class="fade-in" -->
 
-<main>
+  <!-- Page transition overlay -->
+  <div id="page-transition-overlay"></div>
+
+  <!-- Animated background -->
   <div class="scrolling-bg" id="scrollingBg"></div>
+
+  <!-- Fade overlay -->
   <div class="fade-center"></div>
-  <div class="form-box">
-    <label>Username</label>
-    <input type="text" id="username">
-    <label>Password</label>
-    <input type="password" id="password">
-    <button class="go-btn" id="goBtn">Go</button>
-  </div>
-</main>
 
-<aside></aside>
-<footer>© 2025 YourMusic</footer>
-<a href="#top" class="back-to-top">⬆️ Mergi sus</a>
+  <!-- New Centering Container -->
+  <div class="form-container">
+    
+    <!-- Login form -->
+    <div class="form-box">
+      <label>Username</label>
+      <input type="text" id="username">
 
-<script>
-const scrollingBg=document.getElementById('scrollingBg');
-for(let i=0;i<10;i++){const l=document.createElement('div');l.classList.add('line');l.style.top=`${(i/10)*100}%`;
-l.textContent="yourmusicyourmusicyourmusicyourmusic".repeat(6);scrollingBg.appendChild(l);}
-const u=document.getElementById('username'),p=document.getElementById('password'),b=document.getElementById('goBtn');
-function v(){b.classList.toggle('active',u.value&&p.value);} [u,p].forEach(e=>e.addEventListener('input',v));
-b.addEventListener('click',()=>{if(b.classList.contains('active'))window.location.href='dashboard.html';});
-</script>
+      <label>Password</label>
+      <input type="password" id="password">
+
+      <!-- NEW "FORGOT PASSWORD?" LINK -->
+      <div class="forgot-link-container">
+        <a href="forgot-password.html" class="forgot-link">Forgot Password?</a>
+      </div>
+
+      <div class="alt-link">
+        <p>Don’t have an account? <a href="register.html" class="page-link">Register</a></p>
+      </div>
+    </div> <!-- .form-box ends here -->
+
+    <!-- Button is now a SIBLING to the form-box -->
+    <button class="go-btn" id="goBtn">
+      Go
+      <span class="particle-wrapper"></span>
+    </button>
+
+  </div> <!-- .form-container ends here -->
+
+
+  <script>
+    /* Background lines */
+    const scrollingBg = document.getElementById('scrollingBg');
+    const numLines = 10;
+    for (let i = 0; i < numLines; i++) {
+      const line = document.createElement('div');
+      line.classList.add('line');
+      line.style.top = `${(i / numLines) * 100}%`;
+      line.textContent = "yourmusicyourmusicyourmusicyourmusic".repeat(6);
+      scrollingBg.appendChild(line);
+    }
+
+    /* Go button activation */
+    const username = document.getElementById('username');
+    const password = document.getElementById('password');
+    const goBtn = document.getElementById('goBtn');
+    const formBox = document.querySelector('.form-box');
+
+    function validate() {
+      // Check if both fields have a value
+      const allFilled = username.value.trim() !== '' && password.value.trim() !== '';
+      
+      // Toggle 'active' class on both the button AND the form box
+      goBtn.classList.toggle('active', allFilled);
+      formBox.classList.toggle('active', allFilled);
+    }
+    [username, password].forEach(el => el.addEventListener('input', validate));
+
+    goBtn.addEventListener('click', () => {
+      if (goBtn.classList.contains('active')) {
+        
+        // New transition logic
+        const transitionOverlay = document.getElementById('page-transition-overlay');
+        transitionOverlay.classList.add('fade-out');
+        setTimeout(() => {
+          window.location.href = 'dashboard.html';
+        }, 500);
+      }
+    });
+
+    /* Page transition logic */
+    const transitionOverlay = document.getElementById('page-transition-overlay');
+    // Fade in on load
+    window.addEventListener('load', () => {
+      transitionOverlay.style.opacity = '0';
+    });
+
+    // Fade out on link clicks
+    document.querySelectorAll('.page-link, .forgot-link').forEach(link => {
+      link.addEventListener('click', function(e) {
+        e.preventDefault();
+        const destination = this.href;
+        transitionOverlay.classList.add('fade-out');
+        setTimeout(() => {
+          window.location.href = destination;
+        }, 500);
+      });
+    });
+
+  </script>
+
 </body>
 </html>
