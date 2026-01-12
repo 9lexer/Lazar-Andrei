@@ -5,49 +5,46 @@
   <title>Login - YourMusic</title>
   <link rel="stylesheet" href="style.css">
 </head>
-<body> <!-- Removed class="fade-in" -->
+<body>
 
-  <!-- Page transition overlay -->
   <div id="page-transition-overlay"></div>
 
-  <!-- Animated background -->
   <div class="scrolling-bg" id="scrollingBg"></div>
 
-  <!-- Fade overlay -->
   <div class="fade-center"></div>
 
-  <!-- New Centering Container -->
   <div class="form-container">
     
-    <!-- Login form -->
-    <div class="form-box">
-      <label>Username</label>
-      <input type="text" id="username">
+    <form id="loginForm" action="login.php" method="POST">
+        
+        <div class="form-box">
+          <label>Username</label>
+          <input type="text" id="username" name="username" required>
 
-      <label>Password</label>
-      <input type="password" id="password">
+          <label>Password</label>
+          <input type="password" id="password" name="password" required>
 
-      <!-- NEW "FORGOT PASSWORD?" LINK -->
-      <div class="forgot-link-container">
-        <a href="forgot-password.html" class="forgot-link">Forgot Password?</a>
-      </div>
+          <div class="forgot-link-container">
+            <a href="forgot-password.html" class="forgot-link">Forgot Password?</a>
+          </div>
 
-      <div class="alt-link">
-        <p>Don’t have an account? <a href="register.html" class="page-link">Register</a></p>
-      </div>
-    </div> <!-- .form-box ends here -->
+          <div class="alt-link">
+            <p>Don’t have an account? <a href="register.html" class="page-link">Register</a></p>
+          </div>
+        </div> 
 
-    <!-- Button is now a SIBLING to the form-box -->
+    </form>
+
     <button class="go-btn" id="goBtn">
       Go
       <span class="particle-wrapper"></span>
     </button>
 
-  </div> <!-- .form-container ends here -->
+  </div>
 
 
   <script>
-    /* Background lines */
+    /* Background lines (Neschimbat) */
     const scrollingBg = document.getElementById('scrollingBg');
     const numLines = 10;
     for (let i = 0; i < numLines; i++) {
@@ -58,42 +55,46 @@
       scrollingBg.appendChild(line);
     }
 
-    /* Go button activation */
+    /* Logică Buton și Submit */
     const username = document.getElementById('username');
     const password = document.getElementById('password');
     const goBtn = document.getElementById('goBtn');
     const formBox = document.querySelector('.form-box');
+    const loginForm = document.getElementById('loginForm'); // Referință la formular
 
     function validate() {
       // Check if both fields have a value
       const allFilled = username.value.trim() !== '' && password.value.trim() !== '';
       
-      // Toggle 'active' class on both the button AND the form box
+      // Toggle 'active' class
       goBtn.classList.toggle('active', allFilled);
       formBox.classList.toggle('active', allFilled);
     }
     [username, password].forEach(el => el.addEventListener('input', validate));
 
-    goBtn.addEventListener('click', () => {
-      if (goBtn.classList.contains('active')) {
-        
-        // New transition logic
-        const transitionOverlay = document.getElementById('page-transition-overlay');
-        transitionOverlay.classList.add('fade-out');
-        setTimeout(() => {
-          window.location.href = 'dashboard.html';
-        }, 500);
+    goBtn.addEventListener('click', (e) => {
+      // Dacă butonul nu e activ, nu facem nimic
+      if (!goBtn.classList.contains('active')) {
+          e.preventDefault();
+          return;
       }
+
+      // MODIFICARE CRITICĂ: Animație + Submit la PHP
+      const transitionOverlay = document.getElementById('page-transition-overlay');
+      transitionOverlay.classList.add('fade-out');
+      
+      setTimeout(() => {
+          // Trimitem datele la login.php pentru verificare
+          loginForm.submit();
+      }, 500);
     });
 
-    /* Page transition logic */
+    /* Page transition logic (Neschimbat) */
     const transitionOverlay = document.getElementById('page-transition-overlay');
-    // Fade in on load
     window.addEventListener('load', () => {
       transitionOverlay.style.opacity = '0';
     });
 
-    // Fade out on link clicks
     document.querySelectorAll('.page-link, .forgot-link').forEach(link => {
       link.addEventListener('click', function(e) {
         e.preventDefault();

@@ -521,7 +521,7 @@ button.btn-remove-collab:hover {
   bottom: 110px; /* Deasupra player-ului (90px + 20px) */
   right: 30px;
   z-index: 200; /* Deasupra conținutului, dar sub modal */
-  
+   
   /* Stilul butonului */
   background: rgba(180, 0, 255, 0.3); /* Mov semi-transparent */
   backdrop-filter: blur(10px);
@@ -538,7 +538,7 @@ button.btn-remove-collab:hover {
   display: flex;
   align-items: center;
   justify-content: center;
-  
+   
   /* Ascuns by default */
   opacity: 0;
   pointer-events: none;
@@ -557,6 +557,28 @@ button.btn-remove-collab:hover {
   box-shadow: 0 0 20px rgba(180, 0, 255, 0.5);
 }
 
+
+.download-btn {
+    text-decoration: none;            
+    color: #8a2be2 !important;        
+    font-size: 18px;
+    margin-right: 15px;              
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s ease;
+    background: none;
+    border: none;
+    cursor: pointer;
+    opacity: 0.8;
+}
+
+.download-btn:hover {
+    color: #a04bf5 !important;        
+    opacity: 1;
+    transform: translateY(2px);       
+    text-shadow: 0 0 8px rgba(138, 43, 226, 0.6); 
+}
 
 /* === RESPONSIVE DESIGN === */
 @media (max-width: 900px) {
@@ -584,7 +606,7 @@ button.btn-remove-collab:hover {
     height: auto;
     gap: 15px;
   }
-  
+   
   .logo-container {
     margin-bottom: 0;
   }
@@ -657,7 +679,7 @@ button.btn-remove-collab:hover {
     flex-basis: auto;
     width: 100%;
   }
-  
+   
   .player-progress {
     flex-basis: auto;
     width: 90%;
@@ -673,15 +695,15 @@ button.btn-remove-collab:hover {
     width: 95%;
     padding: 20px 15px;
   }
-  
+   
   .modal-content h2 {
     font-size: 1.5rem;
   }
-  
+   
   .confirm-buttons {
     flex-direction: column;
   }
-  
+   
   .back-to-top-btn {
     /* Pe mobil, player-ul este mai înalt, deci butonul trebuie să fie și mai sus */
     bottom: 180px; 
