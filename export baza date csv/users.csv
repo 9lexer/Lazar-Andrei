@@ -1,0 +1,7 @@
+user_id,username,password_hash,email,created_at
+1,admin,$2y$10$UE1FV1Lhkt.fmRIazQnyZ.H4dx5aGSJFPF7yJeoMzKo7CQ22DTywG,admin@email.com,2026-01-11 16:57:00
+2,user1,$2y$10$zp3XuUzr1A49hbUGXy9Goe74JOKljgmsrJ4rNitFEvDjgT4HNfWUO,user@email.com,2026-01-11 20:01:08
+3,user2,$2y$10$AKZvTCV.kpBYxu.CicGKy.HEA8sHMWMgF6.7VHr2tlbx20whlNVqm,email2,2026-01-11 22:54:42
+4,user3,$2y$10$mZRlYR0lj7ebG.77ThSrPuyjkXOMn/.Si2.o4iyilOvjtPulfW.Im,assadasdasd,2026-01-11 22:56:01
+5,user5,$2y$10$5n09d.Hb.5u.N0USreWF4.4jckYxGPOA1Yi3CyASLh7RCDrVNqVJu,asbdas@email.com,2026-01-12 13:39:01
+6,utilizator1,$2y$10$a2AjpWd/A2FHGGLh7ToTN.NTmW9hflktEoRSv/B9.7wLJX553ZWW2,email2323@gmail.com,2026-01-19 13:38:01

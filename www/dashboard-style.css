@@ -1,0 +1,713 @@
+/* === Font (from style.css) === */
+@font-face {
+  font-family: 'Momo Trust Display';
+  src: url('MomoTrustDisplay-Regular.ttf') format('truetype');
+}
+
+/* === RESET & BODY === */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  background: black;
+  color: white;
+  font-family: 'Momo Trust Display', sans-serif;
+  height: 100vh;
+  width: 100vw;
+  overflow: hidden;
+}
+
+/* === APP LAYOUT (GRID) === */
+.app-container {
+  display: grid;
+  grid-template-areas:
+    "sidebar main"
+    "player player";
+  grid-template-columns: 240px 1fr;
+  grid-template-rows: 1fr auto;
+  height: 100vh;
+  width: 100vw;
+}
+
+/* === SIDEBAR === */
+.sidebar {
+  grid-area: sidebar;
+  background: rgba(255, 255, 255, 0.03);
+  backdrop-filter: blur(15px);
+  -webkit-backdrop-filter: blur(15px);
+  border-right: 2px solid rgba(255, 255, 255, 0.1);
+  display: flex;
+  flex-direction: column;
+  padding: 25px;
+  z-index: 100;
+  transition: all 0.3s ease;
+}
+.logo-container {
+  margin-bottom: 40px;
+}
+.nav-logo {
+  font-size: 3rem;
+  font-weight: bold;
+  color: white;
+  text-decoration: none;
+  text-shadow: 0 0 10px rgba(180, 0, 255, 0.7);
+}
+.nav-menu {
+  list-style: none;
+  flex-grow: 1;
+}
+.nav-menu li {
+  margin-bottom: 15px;
+}
+.nav-link {
+  color: rgba(255, 255, 255, 0.7);
+  text-decoration: none;
+  font-size: 1.2rem;
+  transition: all 0.3s ease;
+  display: block;
+  padding: 10px;
+  border-radius: 8px;
+  white-space: nowrap; 
+}
+.nav-link:hover {
+  color: white;
+  background: rgba(255, 255, 255, 0.1);
+}
+.nav-link.active {
+  color: white;
+  background: rgba(180, 0, 255, 0.2);
+  border: 1px solid #b400ff;
+  box-shadow: 0 0 15px rgba(180, 0, 255, 0.4);
+}
+.sidebar-footer {
+  margin-top: auto;
+}
+
+/* === MAIN CONTENT === */
+.main-content {
+  grid-area: main;
+  overflow-y: auto; 
+  padding: 40px;
+  z-index: 50;
+  opacity: 0;
+  animation: fadeInContent 0.5s ease 0.4s forwards;
+  transition: padding 0.3s ease;
+  /* Required for smooth scroll */
+  scroll-behavior: smooth;
+}
+
+@keyframes fadeInContent {
+  to {
+    opacity: 1;
+  }
+}
+
+/* === MUSIC PLAYER FOOTER === */
+.music-player {
+  grid-area: player;
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(15px);
+  -webkit-backdrop-filter: blur(15px);
+  border-top: 2px solid rgba(255, 255, 255, 0.1);
+  height: 90px;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 30px;
+  transition: all 0.3s ease;
+  gap: 20px; 
+}
+
+.song-info {
+  display: flex;
+  flex-direction: column;
+  flex-basis: 25%; 
+  min-width: 150px;
+}
+#player-song-name {
+  font-size: 1.1rem;
+  font-weight: bold;
+}
+#player-artist-name {
+  font-size: 0.9rem;
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.player-controls {
+  display: flex;
+  align-items: center;
+  justify-content: center; 
+  gap: 20px;
+  flex-basis: 20%; 
+}
+.player-btn {
+  background: none;
+  border: none;
+  color: white;
+  font-size: 1.5rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex; 
+  align-items: center; 
+  justify-content: center; 
+}
+.player-btn:hover {
+  color: #b400ff;
+}
+
+.player-btn.play-btn {
+  width: 50px;
+  height: 50px;
+  min-width: 50px; 
+  border-radius: 50%;
+  border: 2px solid white;
+  padding: 0; 
+  line-height: 1;
+  font-size: 1.5rem; 
+}
+
+.player-btn.play-btn svg {
+  width: 24px; 
+  height: 24px;
+  fill: currentColor; 
+}
+
+.player-btn.play-btn[data-icon="play"] {
+  padding-left: 0; 
+}
+
+.player-btn.play-btn:hover {
+  border-color: #b400ff;
+  box-shadow: 0 0 15px rgba(180, 0, 255, 0.5);
+}
+.player-progress {
+  flex-basis: 30%; 
+  min-width: 100px;
+}
+
+/* === STYLES FOR VOLUME === */
+.volume-control {
+  flex-basis: 20%; 
+  min-width: 120px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end; 
+  gap: 10px;
+  color: rgba(255, 255, 255, 0.7);
+}
+.volume-control svg {
+  width: 20px;
+  height: 20px;
+  fill: currentColor;
+}
+.volume-control:hover,
+.volume-control:focus-within {
+  color: white;
+}
+#progress-bar,
+#volume-slider {
+  width: 100%;
+  -webkit-appearance: none;
+  appearance: none;
+  background: transparent;
+  cursor: pointer;
+}
+
+#progress-bar::-webkit-slider-runnable-track,
+#volume-slider::-webkit-slider-runnable-track {
+  background: rgba(255, 255, 255, 0.2);
+  height: 4px;
+  border-radius: 4px;
+}
+#progress-bar::-moz-range-track,
+#volume-slider::-moz-range-track {
+  background: rgba(255, 255, 255, 0.2);
+  height: 4px;
+  border-radius: 4px;
+}
+
+#progress-bar::-webkit-slider-thumb,
+#volume-slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  margin-top: -6px; 
+  background: white;
+  height: 16px;
+  width: 16px;
+  border-radius: 50%;
+  transition: background 0.2s ease;
+}
+#progress-bar::-moz-range-thumb,
+#volume-slider::-moz-range-thumb {
+  background: white;
+  height: 16px;
+  width: 16px;
+  border-radius: 50%;
+  border: none;
+  transition: background 0.2s ease;
+}
+
+#progress-bar:hover::-webkit-slider-thumb,
+#volume-slider:hover::-webkit-slider-thumb {
+  background: #b400ff;
+  box-shadow: 0 0 10px rgba(180, 0, 255, 0.7);
+}
+#progress-bar:hover::-moz-range-thumb,
+#volume-slider:hover::-moz-range-thumb {
+  background: #b400ff;
+  box-shadow: 0 0 10px rgba(180, 0, 255, 0.7);
+}
+
+/* === CONTENT STYLES === */
+.page-header {
+  font-size: 2.5rem;
+  margin-bottom: 30px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  transition: all 0.3s ease;
+}
+.glass-btn {
+  background: rgba(255, 255, 255, 0.05);
+  border: 2px solid rgba(255, 255, 255, 0.8);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  padding: 12px 25px;
+  border-radius: 10px;
+  color: white;
+  font-family: 'Momo Trust Display', sans-serif;
+  font-size: 1rem;
+  text-decoration: none;
+  letter-spacing: 1px;
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+.glass-btn:hover {
+  border-color: #b400ff;
+  box-shadow: 0 0 30px rgba(180, 0, 255, 0.4);
+  transform: scale(1.02);
+}
+
+.content-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 25px;
+}
+.glass-card {
+  background: rgba(255, 255, 255, 0.05);
+  border: 2px solid rgba(255, 255, 255, 0.1);
+  border-radius: 15px;
+  padding: 20px;
+  transition: all 0.3s ease;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  cursor: pointer;
+}
+.glass-card:hover {
+  border-color: rgba(180, 0, 255, 0.5);
+  box-shadow: 0 0 20px rgba(180, 0, 255, 0.2);
+}
+.card-title {
+  font-size: 1.3rem;
+  margin-bottom: 5px;
+}
+.card-subtitle {
+  font-size: 0.9rem;
+  color: rgba(255, 255, 255, 0.6);
+}
+
+.content-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.list-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 15px 20px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 10px;
+  backdrop-filter: blur(5px);
+  -webkit-backdrop-filter: blur(5px);
+  transition: all 0.3s ease;
+  position: relative;
+}
+.list-item:hover {
+  background: rgba(255, 255, 255, 0.1);
+  border-color: rgba(255, 255, 255, 0.3);
+}
+.list-item-main {
+  display: flex;
+  flex-direction: column;
+}
+.list-item-title {
+  font-size: 1.1rem;
+}
+.list-item-sub {
+  font-size: 0.9rem;
+  color: rgba(255, 255, 255, 0.6);
+}
+.list-item-actions button {
+  background: none;
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  color: rgba(255, 255, 255, 0.8);
+  padding: 5px 10px;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-left: 10px;
+  transition: all 0.3s ease;
+}
+.list-item-actions button:hover {
+  background: rgba(255, 255, 255, 0.1);
+  border-color: white;
+  color: white;
+}
+.song-item-download {
+  cursor: pointer;
+}
+.song-item-download:hover .list-item-title {
+  color: #b400ff;
+}
+
+/* === MODAL STYLES === */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  display: none; 
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+.modal-content {
+  background: rgba(30, 30, 30, 0.5);
+  border: 2px solid rgba(255, 255, 255, 0.2);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-radius: 20px;
+  padding: 30px 40px;
+  width: 90%;
+  max-width: 500px;
+  box-shadow: 0 0 40px rgba(180, 0, 255, 0.3);
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  transition: all 0.3s ease;
+}
+.modal-close {
+  position: absolute;
+  top: 15px;
+  right: 20px;
+  background: none;
+  border: none;
+  color: white;
+  font-size: 2rem;
+  cursor: pointer;
+  opacity: 0.7;
+  transition: all 0.3s ease;
+}
+.modal-close:hover {
+  opacity: 1;
+  color: #b400ff;
+}
+.modal-content h2 {
+  font-size: 1.8rem;
+  margin-bottom: 10px;
+}
+.modal-content p {
+  color: rgba(255, 255, 255, 0.8);
+  line-height: 1.5;
+}
+.modal-content label {
+  font-size: 0.9rem;
+  color: rgba(255, 255, 255, 0.7);
+  margin-top: 10px;
+}
+.modal-content input[type="text"],
+.modal-content textarea {
+  width: 100%;
+  padding: 12px;
+  background: rgba(0, 0, 0, 0.3);
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  border-radius: 8px;
+  color: white;
+  font-family: 'Momo Trust Display', sans-serif;
+  font-size: 1rem;
+}
+.modal-content input[type="text"]:focus,
+.modal-content textarea:focus {
+  outline: none;
+  border-color: #b400ff;
+  box-shadow: 0 0 15px rgba(180, 0, 255, 0.3);
+}
+.modal-action-btn {
+  background: rgba(255, 255, 255, 0.05);
+  border: 2px solid rgba(255, 255, 255, 0.8);
+  padding: 12px 25px;
+  border-radius: 10px;
+  color: white;
+  font-family: 'Momo Trust Display', sans-serif;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  width: 100%;
+  margin-top: 15px;
+}
+.modal-action-btn:hover {
+  border-color: #b400ff;
+  background: rgba(180, 0, 255, 0.2);
+  box-shadow: 0 0 30px rgba(180, 0, 255, 0.4);
+}
+.confirm-buttons {
+  display: flex;
+  gap: 15px;
+  width: 100%;
+}
+#confirm-btn-no {
+  background: none;
+  border-color: rgba(255, 255, 255, 0.5);
+}
+#confirm-btn-no:hover {
+  background: rgba(255, 255, 255, 0.1);
+  border-color: white;
+}
+
+.collab-list {
+  max-height: 150px;
+  overflow-y: auto;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 8px;
+  padding: 10px;
+}
+.collab-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+.collab-item:last-child {
+  border-bottom: none;
+}
+.collab-role {
+  font-size: 0.9rem;
+  color: rgba(180, 0, 255, 0.8);
+}
+button.btn-remove-collab {
+  background: none;
+  border: 1px solid rgba(255, 100, 100, 0.5);
+  color: rgba(255, 100, 100, 0.8);
+  padding: 3px 8px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+button.btn-remove-collab:hover {
+  background: rgba(255, 100, 100, 0.1);
+  color: white;
+  border-color: white;
+}
+
+/* === BACK TO TOP BUTTON (NEW) === */
+.back-to-top-btn {
+  position: fixed; /* Fixat pe viewport */
+  bottom: 110px; /* Deasupra player-ului (90px + 20px) */
+  right: 30px;
+  z-index: 200; /* Deasupra conținutului, dar sub modal */
+   
+  /* Stilul butonului */
+  background: rgba(180, 0, 255, 0.3); /* Mov semi-transparent */
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 2px solid rgba(180, 0, 255, 0.7);
+  color: white;
+  font-family: 'Momo Trust Display', sans-serif;
+  font-size: 1.5rem; /* Mărime iconiță */
+  text-decoration: none;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+   
+  /* Ascuns by default */
+  opacity: 0;
+  pointer-events: none;
+  transform: translateY(20px); /* Începe puțin mai jos */
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.back-to-top-btn.visible {
+  opacity: 1;
+  pointer-events: auto;
+  transform: translateY(0); /* Se mută în poziția finală */
+}
+
+.back-to-top-btn:hover {
+  background: rgba(180, 0, 255, 0.5);
+  box-shadow: 0 0 20px rgba(180, 0, 255, 0.5);
+}
+
+
+.download-btn {
+    text-decoration: none;            
+    color: #8a2be2 !important;        
+    font-size: 18px;
+    margin-right: 15px;              
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s ease;
+    background: none;
+    border: none;
+    cursor: pointer;
+    opacity: 0.8;
+}
+
+.download-btn:hover {
+    color: #a04bf5 !important;        
+    opacity: 1;
+    transform: translateY(2px);       
+    text-shadow: 0 0 8px rgba(138, 43, 226, 0.6); 
+}
+
+/* === RESPONSIVE DESIGN === */
+@media (max-width: 900px) {
+  body {
+    overflow: visible; 
+  }
+
+  .app-container {
+    grid-template-areas:
+      "sidebar"
+      "main"
+      "player";
+    grid-template-columns: 1fr;
+    grid-template-rows: auto 1fr auto;
+    height: auto; 
+    min-height: 100vh;
+  }
+
+  .sidebar {
+    flex-direction: row;
+    align-items: center;
+    padding: 10px 15px;
+    border-right: none;
+    border-bottom: 2px solid rgba(255, 255, 255, 0.1);
+    height: auto;
+    gap: 15px;
+  }
+   
+  .logo-container {
+    margin-bottom: 0;
+  }
+
+  .nav-logo {
+    font-size: 2rem;
+  }
+
+  .nav-menu {
+    display: flex;
+    flex-direction: row;
+    flex-grow: 1;
+    gap: 5px;
+    overflow-x: auto; 
+    scrollbar-width: none; 
+  }
+
+  .nav-menu::-webkit-scrollbar {
+    display: none; 
+  }
+
+  .nav-menu li {
+    margin-bottom: 0;
+  }
+
+  .nav-link {
+    font-size: 1rem;
+    padding: 8px 10px;
+    white-space: nowrap; 
+  }
+
+  .sidebar-footer {
+    margin-top: 0;
+  }
+
+  .main-content {
+    padding: 20px;
+  }
+
+  .page-header {
+    font-size: 2rem;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 15px;
+  }
+
+  .glass-btn {
+    width: 100%;
+    text-align: center;
+  }
+
+  .content-grid {
+    grid-template-columns: 1fr; 
+  }
+
+  .music-player {
+    flex-direction: column;
+    height: auto;
+    padding: 15px;
+    gap: 15px;
+    text-align: center;
+  }
+
+  .song-info {
+    flex-basis: auto;
+    min-width: 0;
+  }
+
+  .player-controls {
+    flex-basis: auto;
+    width: 100%;
+  }
+   
+  .player-progress {
+    flex-basis: auto;
+    width: 90%;
+  }
+
+  .volume-control {
+    flex-basis: auto;
+    width: 90%;
+    justify-content: center;
+  }
+
+  .modal-content {
+    width: 95%;
+    padding: 20px 15px;
+  }
+   
+  .modal-content h2 {
+    font-size: 1.5rem;
+  }
+   
+  .confirm-buttons {
+    flex-direction: column;
+  }
+   
+  .back-to-top-btn {
+    /* Pe mobil, player-ul este mai înalt, deci butonul trebuie să fie și mai sus */
+    bottom: 180px; 
+    right: 20px;
+  }
+}

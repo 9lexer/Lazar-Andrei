@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Login - YourMusic</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <div id="page-transition-overlay"></div>
+
+  <div class="scrolling-bg" id="scrollingBg"></div>
+
+  <div class="fade-center"></div>
+
+  <div class="form-container">
+    
+    <form id="loginForm" action="login.php" method="POST">
+        
+        <div class="form-box">
+          <label>Username</label>
+          <input type="text" id="username" name="username" required>
+
+          <label>Password</label>
+          <input type="password" id="password" name="password" required>
+
+          <div class="forgot-link-container">
+            <a href="forgot-password.html" class="forgot-link">Forgot Password?</a>
+          </div>
+
+          <div class="alt-link">
+            <p>Don’t have an account? <a href="register.html" class="page-link">Register</a></p>
+          </div>
+        </div> 
+
+    </form>
+
+    <button class="go-btn" id="goBtn">
+      Go
+      <span class="particle-wrapper"></span>
+    </button>
+
+  </div>
+
+
+  <script>
+    /* Background lines (Neschimbat) */
+    const scrollingBg = document.getElementById('scrollingBg');
+    const numLines = 10;
+    for (let i = 0; i < numLines; i++) {
+      const line = document.createElement('div');
+      line.classList.add('line');
+      line.style.top = `${(i / numLines) * 100}%`;
+      line.textContent = "yourmusicyourmusicyourmusicyourmusic".repeat(6);
+      scrollingBg.appendChild(line);
+    }
+
+    /* Logică Buton și Submit */
+    const username = document.getElementById('username');
+    const password = document.getElementById('password');
+    const goBtn = document.getElementById('goBtn');
+    const formBox = document.querySelector('.form-box');
+    const loginForm = document.getElementById('loginForm'); // Referință la formular
+
+    function validate() {
+      // Check if both fields have a value
+      const allFilled = username.value.trim() !== '' && password.value.trim() !== '';
+      
+      // Toggle 'active' class
+      goBtn.classList.toggle('active', allFilled);
+      formBox.classList.toggle('active', allFilled);
+    }
+    [username, password].forEach(el => el.addEventListener('input', validate));
+
+    goBtn.addEventListener('click', (e) => {
+      // Dacă butonul nu e activ, nu facem nimic
+      if (!goBtn.classList.contains('active')) {
+          e.preventDefault();
+          return;
+      }
+
+      // MODIFICARE CRITICĂ: Animație + Submit la PHP
+      const transitionOverlay = document.getElementById('page-transition-overlay');
+      transitionOverlay.classList.add('fade-out');
+      
+      setTimeout(() => {
+          // Trimitem datele la login.php pentru verificare
+          loginForm.submit();
+      }, 500);
+    });
+
+    /* Page transition logic (Neschimbat) */
+    const transitionOverlay = document.getElementById('page-transition-overlay');
+    window.addEventListener('load', () => {
+      transitionOverlay.style.opacity = '0';
+    });
+
+    document.querySelectorAll('.page-link, .forgot-link').forEach(link => {
+      link.addEventListener('click', function(e) {
+        e.preventDefault();
+        const destination = this.href;
+        transitionOverlay.classList.add('fade-out');
+        setTimeout(() => {
+          window.location.href = destination;
+        }, 500);
+      });
+    });
+
+  </script>
+
+</body>
+</html>

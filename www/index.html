@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>YourMusic - Welcome</title>
+  <style>
+    /* Font Face from your original file */
+    @font-face {
+      font-family: 'Momo Trust Display';
+      src: url('MomoTrustDisplay-Regular.ttf') format('truetype');
+    }
+
+    /* === RESET === */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    /* === BODY === */
+    body {
+      background: black;
+      color: white;
+      font-family: 'Momo Trust Display', sans-serif;
+      height: 100vh;
+      width: 100vw;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+    }
+
+    /* === PAGE TRANSITION === */
+    #page-transition-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background: black;
+      opacity: 0;
+      z-index: 9999; /* Highest z-index */
+      pointer-events: none;
+      transition: opacity 0.5s ease-out;
+    }
+    #page-transition-overlay.fade-out {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    /* === BUBBLE BACKGROUND === */
+    .bubble-background {
+      position: absolute;
+      inset: 0;
+      z-index: 1;
+      overflow: hidden;
+    }
+
+    .bubble {
+      position: absolute;
+      bottom: -200px; /* Start off-screen */
+      border-radius: 50%;
+      overflow: hidden;
+      
+      /* Glass effect */
+      background: radial-gradient(circle, rgba(0, 0, 0, 0.3) 0%, rgba(255, 255, 255, 0.1) 70%); /* Dark center */
+      border: 2px solid rgba(255, 255, 255, 0.4); /* Changed from 0.2 */
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      box-shadow: 0 0 25px rgba(255, 255, 255, 0.2); /* Changed from 0.1 */
+
+      /* Animation */
+      animation: float 20s linear infinite;
+    }
+
+    .bubble img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      opacity: 0.9; /* Changed from 0.7 */
+      transition: opacity 0.3s ease;
+    }
+
+    /* Floating animation */
+    @keyframes float {
+      0% {
+        transform: translateY(0) translateX(0);
+        opacity: 0.8;
+      }
+      50% {
+        /* THIS IS THE FIX: Added translateY(-60vh) to move it up */
+        transform: translateY(-60vh) translateX(20px); /* Gentle side-to-side */
+      }
+      100% {
+        transform: translateY(-120vh) translateX(-20px); /* Float to top */
+        opacity: 0;
+      }
+    }
+
+    /* === CENTER CONTENT === */
+    .center-content {
+      position: relative;
+      z-index: 10; /* On top of bubbles */
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      
+      /* Main glass panel for the content */
+      background: rgba(255, 255, 255, 0.03);
+      border: 2px solid rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      padding: 60px 80px;
+      border-radius: 25px;
+      box-shadow: 0 0 30px rgba(0, 0, 0, 0.5);
+
+      /* Added for fade-in on load */
+      opacity: 0;
+      animation: fadeInContent 0.8s ease-out 0.2s forwards;
+    }
+
+    @keyframes fadeInContent {
+      to {
+        opacity: 1;
+      }
+    }
+
+    /* === LOGO === */
+    .logo {
+      font-size: 10rem;
+      font-weight: 300;
+      line-height: 1;
+      color: #fff;
+      /* Purple glow effect */
+      text-shadow: 0 0 10px rgba(255, 255, 255, 0.5),
+                   0 0 25px rgba(180, 0, 255, 0.7),
+                   0 0 40px rgba(180, 0, 255, 0.5);
+      margin-bottom: 40px;
+    }
+
+    /* === BUTTONS === */
+    .button-group {
+      display: flex;
+      gap: 20px;
+    }
+
+    .glass-btn {
+      /* Glass style from your form-box */
+      background: rgba(255, 255, 255, 0.05);
+      border: 2px solid rgba(255, 255, 255, 0.8);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      
+      /* Button styling */
+      padding: 15px 40px;
+      border-radius: 10px;
+      color: white;
+      font-family: 'Momo Trust Display', sans-serif;
+      font-size: 1.2rem;
+      text-decoration: none;
+      letter-spacing: 1px;
+      transition: all 0.3s ease;
+    }
+
+    /* Hover effect from your .form-box.active */
+    .glass-btn:hover {
+      border-color: #b400ff;
+      box-shadow: 0 0 30px rgba(180, 0, 255, 0.4);
+      transform: scale(1.05);
+    }
+    
+    /* Responsive */
+    @media (max-width: 600px) {
+      .center-content {
+        padding: 40px 30px;
+        width: 90%;
+      }
+      .logo {
+        font-size: 7rem;
+      }
+      .button-group {
+        flex-direction: column;
+        width: 100%;
+      }
+      .glass-btn {
+        text-align: center;
+        width: 100%;
+      }
+    }
+
+  </style>
+</head>
+<body>
+
+  <div id="page-transition-overlay"></div>
+
+  <!-- Background for floating bubbles -->
+  <div class="bubble-background" id="bubble-bg"></div>
+
+  <!-- Main content box -->
+  <div class="center-content">
+    <div class="logo">yrm</div>
+    <div class="button-group">
+      <a href="login.html" class="glass-btn">Log In</a>
+      <a href="register.html" class="glass-btn">Register</a>
+    </div>
+  </div>
+
+  <script>
+    const bubbleBg = document.getElementById('bubble-bg');
+
+    function createBubble() {
+      const bubble = document.createElement('div');
+      bubble.className = 'bubble';
+
+      // Random size (50px to 200px)
+      const size = Math.random() * 150 + 50;
+      bubble.style.width = `${size}px`;
+      bubble.style.height = `${size}px`;
+
+      // Random horizontal start position
+      bubble.style.left = `${Math.random() * 100}vw`;
+
+      // Random animation duration (15s to 30s)
+      const duration = Math.random() * 15 + 15;
+      bubble.style.animationDuration = `${duration}s`;
+
+      // Random horizontal drift
+      const drift = (Math.random() - 0.5) * 40; /* -20px to +20px */
+      bubble.style.setProperty('--drift', `${drift}px`);
+
+      // Create image
+      const img = new Image();
+      // Use Unsplash to get random album covers. The 't=' is to prevent caching.
+      img.src = `https://source.unsplash.com/random/${Math.floor(size)}x${Math.floor(size)}/?album,cover&t=${Date.now()}`;
+      img.alt = 'Random album cover';
+      
+      // Handle image load failure
+      img.onerror = () => {
+        img.style.display = 'none';
+        bubble.style.background = 'radial-gradient(circle, rgba(0, 0, 0, 0.4) 0%, rgba(255, 255, 255, 0.2) 70%)'; // Fallback to white w/ dark center
+      };
+
+      // Add image to bubble once loaded
+      img.onload = () => {
+        bubble.appendChild(img);
+      };
+      
+      // Add bubble to background
+      bubbleBg.appendChild(bubble);
+
+      // Remove bubble after animation ends
+      setTimeout(() => {
+        bubble.remove();
+      }, duration * 1000);
+    }
+
+    // Create a new bubble every 1.5 seconds
+    setInterval(createBubble, 1500);
+
+
+    // --- Page Transition Logic ---
+    const transitionOverlay = document.getElementById('page-transition-overlay');
+    const navLinks = document.querySelectorAll('.glass-btn');
+
+    navLinks.forEach(link => {
+      link.addEventListener('click', function(event) {
+        event.preventDefault(); // Stop the browser from navigating instantly
+        const destination = this.href; // Get the URL from the link
+
+        // Start the fade-out
+        transitionOverlay.classList.add('fade-out');
+
+        // Wait for the transition to finish (500ms)
+        setTimeout(() => {
+          window.location.href = destination; // Navigate to the new page
+        }, 500); // This duration MUST match the CSS transition-duration
+      });
+    });
+
+    // Handle browser "back" button navigation
+    window.addEventListener('pageshow', function(event) {
+      // If the page is shown from the back/forward cache
+      if (event.persisted) {
+        // Instantly remove the fade-out overlay
+        transitionOverlay.classList.remove('fade-out');
+      }
+    });
+  </script>
+
+</body>
+</html>

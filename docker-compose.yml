@@ -1,15 +1,32 @@
 version: "3.8"
 
 services:
-  lamp:
-    image: fauria/lamp
-    container_name: lamp
+  # 1. The Website Container (PHP + Apache)
+  web:
+    build: .                # Uses your new Dockerfile
+    container_name: music_web
     ports:
-      - "8080:80"
+      - "8080:80"           # Website at localhost:8080
+    volumes:
+      - ./www:/var/www/html # Your PHP files
+      # LINIA NOUĂ DE MAI JOS: Încarcă configurarea pentru upload mare (64MB)
+      - ./uploads.ini:/usr/local/etc/php/conf.d/uploads.ini
+    depends_on:
+      - db                  # Waits for DB to start
+
+  # 2. The Database Container (MySQL)
+  db:
+    image: mysql:5.7        # Stable version
+    container_name: music_db
+    ports:
+      - "3307:3306"         # DataGrip connects here (localhost:3307)
     environment:
       MYSQL_ROOT_PASSWORD: root
-      MYSQL_DATABASE: mydb
+      MYSQL_DATABASE: music_player
       MYSQL_USER: user
       MYSQL_PASSWORD: pass
     volumes:
-      - ./www:/var/www/html
+      - db_data:/var/lib/mysql # Saves your data even if container restarts
+
+volumes:
+  db_data:
